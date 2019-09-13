@@ -1,0 +1,23 @@
+<%= paginate @services %>
+
+<div class="form-inline" id="service-search">
+  <%= search_form_for(@q, :url => services_path, :action => "search") do |f| %>
+    <%= f.search_field :description_cont, :class => "form-control mr-sm-2 form-left", :placeholder => "Keywords" %>
+    <%= f.search_field :location, :class => "form-control mr-sm-2 form-middle", :placeholder => "Zip Code" %>
+    <%= text_field_tag :distance, @distance, :class => "form-control mr-sm-2 form-middle", :style => "width: 75px", :placeholder => "(mi)" %>
+    <%= f.select :classifications_name_eq, @classifications.collect { |c| [c.name, c.name]}.prepend(["-Classification-", ""]), {}, { :prompt => "Classification", :placeholder => "Classification", :class => "form-control mr-sm-2 form-middle" } %>
+    <%= button_tag :type => "submit", :class => "form-control", :id => "service-search-btn", :name => nil do %>
+      <span class="fa fa-search" style="padding-right: 3px"></span>
+    <% end %>
+  <% end %>
+</div>
+
+<span class="pull-right" data-toggle="tooltip" data-placement="top" title="Only available when signed in">
+  <%= link_to "List a service", new_service_path, :class => "btn btn-outline-success pull-right #{'disabled' if !user_signed_in?}", :id => 'new-service-btn' %>
+</span>
+
+<div id="services-table">
+  <%= render 'services/services_table', :services => @services %>
+</div>
+
+<%= paginate @services %>

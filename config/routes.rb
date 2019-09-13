@@ -1,0 +1,31 @@
+Rails.application.routes.draw do
+  root :to => 'pages#home'
+
+  get '/about' => 'pages#about', :as => 'about'
+  get '/services' => 'services#index', :as => 'services'
+  get '/requests' => 'requests#index', :as => 'requests'
+  get '/search_services' => 'services#search', :as => 'search_services'
+  get '/search_requests' => 'requests#search', :as => 'search_requests'
+  post '/search_listings' => 'pages#search', :as => 'search_listings'
+
+  authenticated :user do
+    get '/services/new' => 'services#new', :as => 'new_service'
+    post '/services/new' => 'services#create', :as => 'create_service'
+    get '/services/:id/edit' => 'services#edit', :as => 'edit_service'  
+    put '/services/:id' => 'services#update'
+    delete '/services/:id' => 'services#destroy', :as => 'destroy_service'
+    get '/requests/new' => 'requests#new', :as => 'new_request'
+    post '/requests/new' => 'requests#create', :as => 'create_request'
+    get '/requests/:id/edit' => 'requests#edit', :as => 'edit_request'  
+    put '/requests/:id' => 'requests#update'
+    delete '/requests/:id' => 'requests#destroy', :as => 'destroy_request'
+    get '/dashboard' => 'pages#dashboard'
+  end
+
+  # goes after /services/new to make sure "new" isn't interpreted as :id
+  get '/services/:id' => 'services#show', :as => 'service'
+  get '/requests/:id' => 'requests#show', :as => 'request'
+
+  devise_for :users
+  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+end

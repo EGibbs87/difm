@@ -1,0 +1,8 @@
+<hr>
+<h1>Edit Service</h1>
+<hr>
+<div class="my-2 my-lg-0 inner-content-wrapper">
+  <%= form_for(@service, :url => edit_service_path(@service), :html => { :method => :puts }) do |f| %>
+    <%= render 'services/form', { :f => f, :classifications => @classifications } %>
+  <% end %>
+</div>

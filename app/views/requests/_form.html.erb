@@ -1,0 +1,39 @@
+<div id="request-form">
+  <% sel_class = @request.classifications.collect(&:name) %>
+  <%= f.text_field :location, :class => "form-control mr-sm-2 form-new", :placeholder => "Primary Zip Code" %>
+  <%= f.text_field :range, :class => "form-control mr-sm-2 form-new", :placeholder => "Range (mi)" %>
+  <%= f.text_field :timeframe, :class => "form-control mr-sm-2 form-new", :placeholder => "When service is needed" %>
+  <%= f.text_area :description, :class => "form-control mr-sm-2 form-new", :placeholder => "Request description" %>
+  <span id="classification-header"><b>Classifications:</b></span><%= f.collection_check_boxes :classifications, classifications, :id, :name, {} do |c| %>
+    <%= c.label(class: "check_box") do %>
+      <div class="col-xs-4 form_check_boxes">
+        <%= c.check_box(:class => "check_box", :checked => sel_class.include?(c.object.name)) %>
+        <%= c.object.name %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <br>
+  <%= f.submit "Submit", :class => "btn btn-outline-success" %>
+</div>
+
+<script>
+  // make sure that if all checkboxes are empty, "Other" is checked
+  function validateCheckboxes(){
+    var cbs = Array.from(document.querySelectorAll("label"));
+    var checked = cbs.map(function(e){
+      return e.querySelector('[type=checkbox]').checked;
+    })
+    if(checked.reduce(function(x,e){ return x * !e }, true)){
+      // check 'other'
+      other = cbs.filter(function(e){ return e.innerText.trim() == "Other" })[0];
+
+      other.querySelector('[type=checkbox]').checked = true
+    }
+  }
+  // Validate form
+  $(document).ready(function(){
+    $('.check_box').change(validateCheckboxes);
+    validateCheckboxes();
+  })
+</script>

@@ -1,0 +1,14 @@
+<hr>
+<h1>Service Information</h1>
+<hr>
+<div class="inner-content-wrapper">
+  <span><b>Zip Code: </b></span><%= @service.location %><br>
+  <span><b>Range: </b></span><%= @service.range %> mi<br>
+  <span><b>Availability: </b></span><%= @service.availability %><br>
+  <span><b>Description: </b></span><%= @service.description %><br>
+  <span><b>Classifications: </b></span><%= @service.classifications.collect(&:name).join(", ") %><br>
+  <% if current_user.id == @service.user_id %>
+    <span><b>Contact: </b></span><%= @service.user.email %><br>
+    <%= link_to "Edit", edit_service_path(@service) %> | <%= link_to "Remove", destroy_service_path(@service), :method => :delete %>
+  <% end %>
+</div>

@@ -1,0 +1,42 @@
+<div id="sec-1" style="background-image: url(<%= image_url('carpentry.jpg') %>);">
+  <div id="sec-1-block">
+    <span class="buffered-text" id="tagline"><b>Quickly find the help you need</b></span><br><br>
+    <span class="buffered-text" id="sub-tagline">Reach out to our users to quickly find someone to help you with whatever you need.</span><br><br>
+    <div class="form-inline my-2 my-lg-0" id="quick-search">
+      <%= search_form_for(@q, :url => search_listings_path, :method => :post) do |f| %>
+        <%= f.search_field :description_cont, :class => "form-control mr-sm-2 form-left", :placeholder => "Keywords" %>
+        <%= f.search_field :location, :class => "form-control mr-sm-2 form-middle", :placeholder => "Zip Code" %>
+        <%= text_field_tag :distance, @distance, :class => "form-control mr-sm-2 form-middle", :style => "width: 75px", :placeholder => "(mi)" %>
+        <%= f.select :classifications_name_eq, @classifications.collect { |c| [c.name, c.name]}.prepend(["-Classification-", ""]), {}, { :prompt => "Classification", :placeholder => "Classification", :class => "form-control mr-sm-2 form-right" } %>
+        <br>
+        <%= button_tag :type => "submit", :class => "form-control btn-left", :id => "service-search-btn", :name => "service"  do %>
+          <span class="fa fa-search" style="padding-right: 3px"></span> Services
+        <% end %>
+        <%= button_tag :type => "submit", :class => "form-control btn-right", :id => "request-search-btn", :name => "request"  do %>
+          <span class="fa fa-search" style="padding-right: 3px"></span> Requests
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<hr>
+<div id="recent-services-header">
+  <h1>Recent Service Listings</h1>
+</div>
+
+<hr>
+<div id="recent-services">
+  <%= render 'services/services_table', :services => @recent_services %>
+</div>
+<hr>
+
+<hr>
+<div id="recent-requests-header">
+  <h1>Recent Request Listings</h1>
+</div>
+<hr>
+
+<div id="recent-requests">
+  <%= render 'requests/requests_table', :requests => @recent_requests %>
+</div>

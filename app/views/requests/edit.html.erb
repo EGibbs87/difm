@@ -1,0 +1,8 @@
+<hr>
+<h1>Edit Request</h1>
+<hr>
+<div class="my-2 my-lg-0 inner-content-wrapper">
+  <%= form_for(@request, :url => edit_request_path(@request), :html => { :method => :puts }) do |f| %>
+    <%= render 'requests/form', { :f => f, :classifications => @classifications } %>
+  <% end %>
+</div>

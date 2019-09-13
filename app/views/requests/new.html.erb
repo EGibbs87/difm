@@ -1,0 +1,9 @@
+<hr>
+<h1>Post New Request</h1>
+<hr>
+<div class="my-2 my-lg-0 inner-content-wrapper">
+  <hr>
+  <%= form_for(@request, :url => new_request_path, :html => { :method => :post }) do |f| %>
+    <%= render 'requests/form', { :f => f, :classifications => @classifications } %>
+  <% end %>
+</div>

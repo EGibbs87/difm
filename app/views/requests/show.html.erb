@@ -1,0 +1,14 @@
+<hr>
+<h1>Request Information</h1>
+<hr>
+<div class="inner-content-wrapper">
+  <span><b>Zip Code: </b></span><%= @request.location %><br>
+  <span><b>Range: </b></span><%= @request.range %> mi<br>
+  <span><b>Timeframe: </b></span><%= @request.timeframe %><br>
+  <span><b>Description: </b></span><%= @request.description %><br>
+  <span><b>Classifications: </b></span><%= @request.classifications.collect(&:name).join(", ") %><br>
+  <% if current_user.id == @request.user_id %>
+  <span><b>Contact: </b></span><%= @request.user.email %><br>
+    <%= link_to "Edit", edit_request_path(@request) %> | <%= link_to "Remove", destroy_request_path(@request), :method => :delete %>
+  <% end %>
+</div>

@@ -1,0 +1,22 @@
+<table class="table table-hover">
+  <thead class="thead-dark">
+    <tr>
+      <th style="width: 10%" scope="col">Posted</th>
+      <th style="width: 10%" scope="col">Zip Code</th>
+      <th style="width: 15%" scope="col">Availability</th>
+      <th style="width: 25%" scope="col">Classifications</th>
+      <th style="width: 40%" scope="col">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% services.each do |s| %>
+      <tr onclick="window.location='/services/<%= s.id %>';" class="service-row">
+        <td><%= s.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%F %H:%M") %></td>
+        <td><%= s.location %></td>
+        <td><%= s.availability %></td>
+        <td><%= s.classifications.collect(&:name).join(", ") %></td>
+        <td><%= s.description %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

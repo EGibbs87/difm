@@ -1,0 +1,22 @@
+<table class="table table-hover">
+  <thead class="thead-dark">
+    <tr>
+      <th style="width: 10%" scope="col">Posted</th>
+      <th style="width: 10%" scope="col">Zip Code</th>
+      <th style="width: 15%" scope="col">Timeframe</th>
+      <th style="width: 25%" scope="col">Classifications</th>
+      <th style="width: 40%" scope="col">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% requests.each do |r| %>
+      <tr onclick="window.location='/requests/<%= r.id %>';" class="request-row">
+        <td><%= r.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%F %H:%M") %></td>
+        <td><%= r.location %></td>
+        <td><%= r.timeframe %></td>
+        <td><%= r.classifications.collect(&:name).join(", ") %></td>
+        <td><%= r.description %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
