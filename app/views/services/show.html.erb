@@ -7,8 +7,15 @@
   <span><b>Availability: </b></span><%= @service.availability %><br>
   <span><b>Description: </b></span><%= @service.description %><br>
   <span><b>Classifications: </b></span><%= @service.classifications.collect(&:name).join(", ") %><br>
-  <% if current_user.id == @service.user_id %>
-    <span><b>Contact: </b></span><%= @service.user.email %><br>
-    <%= link_to "Edit", edit_service_path(@service) %> | <%= link_to "Remove", destroy_service_path(@service), :method => :delete %>
+  <% if user_signed_in? %>
+    <% if @service.user.show_email_service %>
+      <span><b>Contact Email: </b></span><%= @service.user.email %><br>
+    <% end %>
+    <% if @service.user.show_phone_service %>
+      <span><b>Contact Phone: </b></span><%= @service.user.phone %><br>
+    <% end %>
+    <% if current_user.id == @service.user_id %>
+      <%= link_to "Edit", edit_service_path(@service) %> | <%= link_to "Remove", destroy_service_path(@service), :method => :delete %>
+    <% end %>
   <% end %>
 </div>

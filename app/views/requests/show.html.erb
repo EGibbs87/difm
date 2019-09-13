@@ -7,8 +7,15 @@
   <span><b>Timeframe: </b></span><%= @request.timeframe %><br>
   <span><b>Description: </b></span><%= @request.description %><br>
   <span><b>Classifications: </b></span><%= @request.classifications.collect(&:name).join(", ") %><br>
-  <% if current_user.id == @request.user_id %>
-  <span><b>Contact: </b></span><%= @request.user.email %><br>
-    <%= link_to "Edit", edit_request_path(@request) %> | <%= link_to "Remove", destroy_request_path(@request), :method => :delete %>
+  <% if user_signed_in? %>
+    <% if @request.user.show_email_request %>
+      <span><b>Contact Email: </b></span><%= @request.user.email %><br>
+    <% end %>
+    <% if @request.user.show_phone_request %>
+      <span><b>Contact Phone: </b></span><%= @request.user.phone %><br>
+    <% end %>
+    <% if current_user.id == @request.user_id %>
+      <%= link_to "Edit", edit_request_path(@request) %> | <%= link_to "Remove", destroy_request_path(@request), :method => :delete %>
+    <% end %>
   <% end %>
 </div>
