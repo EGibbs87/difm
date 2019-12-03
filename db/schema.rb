@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_13_202645) do
+ActiveRecord::Schema.define(version: 2019_11_26_194831) do
 
   create_table "classifications", force: :cascade do |t|
     t.string "name"
@@ -28,6 +28,24 @@ ActiveRecord::Schema.define(version: 2019_09_13_202645) do
     t.integer "classification_id", null: false
     t.integer "service_id", null: false
     t.index ["classification_id", "service_id"], name: "ix_classification_id_service_id"
+  end
+
+  create_table "credit_cards", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "digits"
+    t.integer "month"
+    t.integer "year"
+    t.string "stripe_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_credit_cards_on_user_id"
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string "name"
+    t.decimal "price"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "requests", force: :cascade do |t|
@@ -56,6 +74,18 @@ ActiveRecord::Schema.define(version: 2019_09_13_202645) do
     t.index ["user_id"], name: "index_services_on_user_id"
   end
 
+  create_table "user_reviews", force: :cascade do |t|
+    t.integer "for_user_id", null: false
+    t.integer "by_user_id", null: false
+    t.string "role"
+    t.text "content"
+    t.integer "stars"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["by_user_id"], name: "index_user_reviews_on_by_user_id"
+    t.index ["for_user_id"], name: "index_user_reviews_on_for_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -70,6 +100,12 @@ ActiveRecord::Schema.define(version: 2019_09_13_202645) do
     t.boolean "show_email_service"
     t.boolean "show_phone_request"
     t.boolean "show_email_request"
+    t.string "customer_id"
+    t.string "sub_type"
+    t.integer "free_posts", default: 3
+    t.text "profile"
+    t.string "posts", default: "1"
+    t.string "username"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

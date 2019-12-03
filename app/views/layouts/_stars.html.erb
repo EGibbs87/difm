@@ -1,0 +1,23 @@
+<% reviews = user.reviews(role) %>
+<% avg = reviews.average(:stars).to_f %>
+<% avg.to_i.times do %>
+  <img src="<%= image_url('star.png') %>" height="15px">
+<% end %>
+
+<% case (avg - avg.floor).round(2) %>
+<% when 0.9..1 %>
+  <img src="<%= image_url('star.png') %>" height="15px">
+<% when 0.6..0.89 %>
+  <img src="<%= image_url('star-3q.png') %>" height="15px">
+<% when 0.4..0.59 %>
+  <img src="<%= image_url('star-2q.png') %>" height="15px">
+<% when 0.1..0.39 %>
+  <img src="<%= image_url('star-1q.png') %>" height="15px">
+<% when 0.01..0.09 %>
+  <img src="<%= image_url('star-empty.png') %>" height="15px">
+<% end %>
+
+<% (5 - avg.ceil).times do %>
+  <img src="<%= image_url('star-empty.png') %>" height="15px">
+<% end %>
+<%= avg.round(2) || 0.round(2) %> (<%= reviews.count %>)

@@ -1,0 +1,36 @@
+<%= paginate @users %>
+
+<div class="form-inline" id="user-search">
+  <%= search_form_for(@q, :url => users_path, :action => "search") do |f| %>
+    <%= f.search_field :username_cont, :class => "form-control mr-sm-2 form-left", :placeholder => "Username" %>
+    <%= f.search_field :profile_cont, :class => "form-control mr-sm-2 form-middle", :placeholder => "Profile keyword(s)" %>
+    <%= button_tag :type => "submit", :class => "form-control", :id => "user-search-btn", :name => nil do %>
+      <span class="fa fa-search" style="padding-right: 3px"></span>
+    <% end %>
+  <% end %>
+</div>
+
+<div id="users-table">
+  <table class="table table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th width="20%" scope="col">Username</th>
+        <th width="15%" scope="col">Service Rating</th>
+        <th width="15%" scope="col">Requester Rating</th>
+        <th width="50%" scope="col">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |u| %>
+        <tr>
+          <td><%= link_to u.username, reviews_path(u.id) %></td>
+          <td><%= render :partial => 'layouts/stars', :locals => { :user => u, :role => "service" } %></td>
+          <td><%= render :partial => 'layouts/stars', :locals => { :user => u, :role => "request" } %></td>
+          <td><%= u.profile || "None provided." %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= paginate @users %>

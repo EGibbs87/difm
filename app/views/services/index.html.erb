@@ -12,7 +12,7 @@
   <% end %>
 </div>
 
-<span class="pull-right" data-toggle="tooltip" data-placement="top" title="Only available when signed in">
+<span class="pull-right" data-toggle="<%= !user_signed_in? ? 'tooltip' : '' %>" data-placement="top" title="Only available when signed in">
   <%= link_to "List a service", new_service_path, :class => "btn btn-outline-success pull-right #{'disabled' if !user_signed_in?}", :id => 'new-service-btn' %>
 </span>
 

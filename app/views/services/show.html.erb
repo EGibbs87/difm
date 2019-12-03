@@ -2,6 +2,8 @@
 <h1>Service Information</h1>
 <hr>
 <div class="inner-content-wrapper">
+  <span><b>User: </b></span><%= @service.user.username %> <%= render :partial => 'layouts/stars', :locals => { :user => @service.user, :role => "service" } %>
+<br>
   <span><b>Zip Code: </b></span><%= @service.location %><br>
   <span><b>Range: </b></span><%= @service.range %> mi<br>
   <span><b>Availability: </b></span><%= @service.availability %><br>

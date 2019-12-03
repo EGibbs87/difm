@@ -47,7 +47,7 @@ html, body {
   margin-top: 10px;
 }
 
-.service-row, .request-row {
+.service-link-cell, .request-link-cell {
   cursor: pointer;
 }
 
@@ -142,11 +142,11 @@ html, body {
   margin-left: -4px !important;
  }
 
-#quick-search, #service-search, #request-search {
+#quick-search, #service-search, #request-search, #user-search {
   display: inline;
 }
 
-#quick-search-btn, #service-search-btn, #request-search-btn {
+#quick-search-btn, #service-search-btn, #request-search-btn, #user-search-btn {
   background-color: red;
   border-color: red;
   color: white;
@@ -156,16 +156,24 @@ html, body {
   border-bottom-right-radius: 15px;
 }
 
-#service-search, #request-search {
+#service-search, #request-search, #user-search {
   display: block;
   text-align: center;
   margin-top: 8px;
 }
 
-#new-service-btn, #new-request-btn {
+#user-search {
+  margin-bottom: 8px
+}
+
+#new-service-btn, #new-request-btn, #new-review-btn {
   margin-top: 10px;
   margin-bottom: 10px;
   margin-right: 10px;
+}
+
+#reviews-container {
+  margin-top: 60px;
 }
 
 .form_check_boxes {

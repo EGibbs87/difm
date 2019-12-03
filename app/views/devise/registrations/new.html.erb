@@ -4,11 +4,15 @@
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
     <%= render "devise/shared/error_messages", resource: resource %>
 
-    <%= f.email_field :email, :autofocus => true, :placeholder => "Email", :class => "form-control reg-form-field" %>
+    <%= f.text_field :username, :autofocus => true, :placeholder => "Username", :class => "form-control reg-form-field" %>
+
+    <%= f.email_field :email, :placeholder => "Email", :class => "form-control reg-form-field" %>
 
     <%= f.password_field :password, :placeholder => "Password (min 6 characters)", :class => "form-control reg-form-field" %>
 
     <%= f.password_field :password_confirmation, :placeholder => "Confirm password", :class => "form-control reg-form-field" %>
+
+    <%= f.text_field :profile, :placeholder => "Personal summary (optional)", :class => "form-control reg-form-field" %>
 
     <%= f.submit "Sign up", :class => "btn btn-outline-danger" %>
   <% end %>

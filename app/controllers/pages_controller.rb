@@ -32,5 +32,4 @@ class PagesController < ApplicationController
   def search_params
     params.except(:button).permit(:distance, :button, :q => [:description_cont, :location, :classifications_name_eq])
   end
-
 end

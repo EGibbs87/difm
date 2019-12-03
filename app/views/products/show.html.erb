@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @product.name %>
+</p>
+
+<p>
+  <strong>Price:</strong>
+  <%= @product.price %>
+</p>
+
+<%= render 'shared/card_and_charge_form', product: @product %>
+
+<% if current_user.credit_cards.reject { |card| card.new_record? }.any? %>
+  <%= render 'shared/charge_form', product: @product %>
+<% end %>
+
+<%= link_to 'Edit', edit_product_path(@product) %> |
+<%= link_to 'Back', products_path %>

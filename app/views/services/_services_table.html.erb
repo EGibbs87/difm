@@ -10,12 +10,16 @@
   </thead>
   <tbody>
     <% services.each do |s| %>
-      <tr onclick="window.location='/services/<%= s.id %>';" class="service-row">
-        <td><%= s.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%F %H:%M") %></td>
-        <td><%= s.location %></td>
-        <td><%= s.availability %></td>
-        <td><%= s.classifications.collect(&:name).join(", ") %></td>
-        <td><%= s.description %></td>
+      <tr>
+        <td onclick="window.location='/services/<%= s.id %>';" class="service-link-cell"><%= s.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%F %H:%M") %></td>
+        <td onclick="window.location='/services/<%= s.id %>';" class="service-link-cell"><%= s.location %></td>
+        <td onclick="window.location='/services/<%= s.id %>';" class="service-link-cell"><%= s.availability %></td>
+        <td onclick="window.location='/services/<%= s.id %>';" class="service-link-cell"><%= s.classifications.collect(&:name).join(", ") %></td>
+        <td>
+          <%= s.description %><br>
+          <a href="<%= reviews_path(s.user.id) %>"><i><%= s.user.username %>
+          <%= render :partial => 'layouts/stars', :locals => { :user => s.user, :role => "service" } %></i></a>
+        </td>
       </tr>
     <% end %>
   </tbody>

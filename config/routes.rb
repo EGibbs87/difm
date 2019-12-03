@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   get '/search_services' => 'services#search', :as => 'search_services'
   get '/search_requests' => 'requests#search', :as => 'search_requests'
   post '/search_listings' => 'pages#search', :as => 'search_listings'
+  get '/users' => 'users#users', :as => 'users'
+  get '/users/:user_id/reviews' => 'users#reviews', :as => 'reviews'
 
   authenticated :user do
     get '/services/new' => 'services#new', :as => 'new_service'
@@ -20,6 +22,10 @@ Rails.application.routes.draw do
     put '/requests/:id' => 'requests#update'
     delete '/requests/:id' => 'requests#destroy', :as => 'destroy_request'
     get '/dashboard' => 'pages#dashboard'
+    get '/users/:user_id/reviews/new' => 'users#new_review', :as => 'new_review'
+    resources :products
+    resources :credit_cards
+    resources :charges
   end
 
   # goes after /services/new to make sure "new" isn't interpreted as :id
@@ -28,4 +34,6 @@ Rails.application.routes.draw do
 
   devise_for :users
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+
+  mount StripeEvent::Engine, at: '/payments'
 end

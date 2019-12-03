@@ -2,6 +2,8 @@
 <h1>Request Information</h1>
 <hr>
 <div class="inner-content-wrapper">
+  <span><b>User: </b></span><%= @request.user.username %> <%= render :partial => 'layouts/stars', :locals => { :user => @request.user, :role => "request" } %>
+<br>
   <span><b>Zip Code: </b></span><%= @request.location %><br>
   <span><b>Range: </b></span><%= @request.range %> mi<br>
   <span><b>Timeframe: </b></span><%= @request.timeframe %><br>

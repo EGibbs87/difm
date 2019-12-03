@@ -16,6 +16,7 @@
       <li class="nav-item"><%= link_to "ABOUT", about_path, :class => "nav-link" %></li>
       <li class="nav-item"><%= link_to "SERVICES", services_path, :class => "nav-link" %></li>
       <li class="nav-item"><%= link_to "REQUESTS", requests_path, :class => "nav-link" %></li>
+      <li class="nav-item"><%= link_to "USERS", users_path, :class => "nav-link" %></li>
     </ul>
     <div class="form-inline my-2 my-lg-0">
       <% if user_signed_in? %>
@@ -24,11 +25,11 @@
       <% else %>
         <div id="login-block">
           <%= form_for(resource, :as => resource_name, :url => session_path(resource), :method => :post) do |f| %>
-            <%= f.text_field :email, :class => "form-control mr-sm-2", :placeholder => "Email" %>
-            <%= f.password_field :password, :class => "form-control mr-sm-2", :placeholder => "Password" %>
-            <%= f.submit "Login", :class => "btn btn-outline-danger my-2 my-sm-0" %>
-          <% end %>
-          <%= link_to "Register", new_user_registration_path, :class => "btn btn-outline-success my-2 my-sm-0", :style => "margin-top: 8px !important" %>
+            <%= f.text_field :login, :class => "form-control mr-sm-2", :placeholder => "Username or Email" %>
+            <%= f.password_field :password, :class => "form-control mr-sm-2", :placeholder => "Password" %><br>
+            <%= f.submit "Login", :class => "btn btn-outline-danger my-2 my-sm-0", :style => "margin-top: 8px !important" %>
+            <%= link_to "Register", new_user_registration_path, :class => "btn btn-outline-success my-2 my-sm-0", :style => "margin-top: 8px !important; margin-left: 5px" %>
+          <% end %> 
         </div>
       <% end %>
     </div>

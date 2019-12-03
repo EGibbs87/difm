@@ -1,0 +1,82 @@
+<span class="pull-right" data-toggle="<%= !user_signed_in? ? 'tooltip' : ''%>" data-placement="top" title="Only available when signed in">
+  <%= link_to "Leave a review", new_review_path(@user.id), :class => "btn btn-outline-success pull-right #{'disabled' if !user_signed_in?}", :id => 'new-review-btn' %>
+</span>
+<div id="reviews-container">
+  <hr>
+  <h1>Reviews for Services</h1>
+  <hr>
+
+  <div id="users-table">
+    <table class="table table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th width="20%" scope="col">Reviewer</th>
+          <th width="80%" scope="col">Rating</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @user.reviews("service").count > 0 %>
+          <% @user.reviews("service").each do |sr| %>
+            <tr>
+              <td><%= sr.by_user.username %></td>
+              <td>
+                <% sr.stars.times do %>
+                  <img src="<%= image_url('star.png') %>" height="15px">
+                <% end %>
+                <% (5 - sr.stars).times do %>
+                  <img src="<%= image_url('star-empty.png') %>" height="15px">
+                <% end %>
+                 (<%= sr.stars %>)
+                <hr>
+                <%= sr.content %>
+              </td>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan=2>User has not received any reviews for services provided.</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+  <h1>Reviews for Requesting Party</h1>
+  <hr>
+
+  <div id="users-table">
+    <table class="table table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th width="20%" scope="col">Username</th>
+          <th width="80%" scope="col">Rating</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @user.reviews("request").count > 0 %>
+          <% @user.reviews("request").each do |rr| %>
+            <tr>
+              <td><%= rr.by_user.username %></td>
+              <td>
+                <% rr.stars.times do %>
+                  <img src="<%= image_url('star.png') %>" height="15px">
+                <% end %>
+                <% (5 - rr.stars).times do %>
+                  <img src="<%= image_url('star-empty.png') %>" height="15px">
+                <% end %>
+                 (<%= rr.stars %>)
+                <hr>
+                <%= rr.content %>
+              </td>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan=2>User has not received any reviews for services requested.</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
