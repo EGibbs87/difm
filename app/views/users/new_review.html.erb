@@ -1,0 +1,5 @@
+<div class="my-2 my-lg-0 inner-content-wrapper review-form-wrapper">
+  <%= form_for(@review, :url => new_review_path({ :role => @role }), :html => { :method => :post }) do |f| %>
+    <%= render :partial => 'users/review_form', :locals => { :f => f, :review => @review } %>
+  <% end %>
+</div>

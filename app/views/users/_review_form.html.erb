@@ -1,0 +1,50 @@
+<div id="review-form">
+  <%= f.select :role, [["Select Role", nil],["They provided a service to me", "service"],["I requested a service of them", "request"]], { :selected => @review.role }, { :class => "form-control mr-sm-2", :disabled => true } %>
+  <%= f.hidden_field :role, :value => @review.role %>
+  <%= f.hidden_field :stars, :value => review.stars %>
+  <div id='star-container'>
+    <span id='star-1' class="star"><img id='star-img-1' src="<%= image_url(review.stars.to_i >= 1 ? 'star.png' : 'star-empty.png') %>" height='15px'></span>
+    <span id='star-2' class="star"><img id='star-img-2' src="<%= image_url(review.stars.to_i >= 2 ? 'star.png' : 'star-empty.png') %>" height='15px'></span>
+    <span id='star-3' class="star"><img id='star-img-3' src="<%= image_url(review.stars.to_i >= 3 ? 'star.png' : 'star-empty.png') %>" height='15px'></span>
+    <span id='star-4' class="star"><img id='star-img-4' src="<%= image_url(review.stars.to_i >= 4 ? 'star.png' : 'star-empty.png') %>" height='15px'></span>
+    <span id='star-5' class="star"><img id='star-img-5' src="<%= image_url(review.stars.to_i >= 5 ? 'star.png' : 'star-empty.png') %>" height='15px'></span>
+  </div>
+  <%= f.text_area :content, :class => "form-control mr-sm-2 form-new", :placeholder => "Describe your interaction here" %>
+  <br>
+  <%= f.submit "Submit Review", :class => "btn btn-outline-success" %>
+</div>
+
+<script>
+  $(document).ready(function(){
+    var curStars = $('#user_review_stars').val();
+    var list = [1,2,3,4,5];
+    // highlight stars when hovering
+    $('.star').mouseenter(function(){
+      var id = this.id.substr(-1);
+      list.forEach(function(e){
+        if(e <= id){
+          $('#star-img-' + String(e))[0].src = "<%= image_url('star.png') %>"
+        }else{
+          $('#star-img-' + String(e))[0].src = "<%= image_url('star-empty.png') %>"
+        }
+      });
+    });
+    // remove highlights when leaving
+    $('.star').mouseleave(function(){
+      var id = this.id.substr(-1);
+      list.forEach(function(e){
+        if(curStars >= e){
+          $('#star-img-' + String(e))[0].src = "<%= image_url('star.png') %>"
+        }else{
+          $('#star-img-' + String(e))[0].src = "<%= image_url('star-empty.png') %>"
+        }
+      });
+    });
+    // select a value
+    $('.star').click(function(){
+      var val = parseInt(this.id.substr(-1));
+      $('#user_review_stars').val(val);
+      curStars = $('#user_review_stars').val();
+    })
+  })
+</script>

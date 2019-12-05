@@ -22,7 +22,11 @@ Rails.application.routes.draw do
     put '/requests/:id' => 'requests#update'
     delete '/requests/:id' => 'requests#destroy', :as => 'destroy_request'
     get '/dashboard' => 'pages#dashboard'
-    get '/users/:user_id/reviews/new' => 'users#new_review', :as => 'new_review'
+    get '/users/:user_id/reviews/new_review' => 'users#new_review', :as => 'new_review'
+    get '/users/:user_id/reviews/edit_review' => 'users#edit_review', :as => 'edit_review'
+    post '/users/:user_id/reviews/new_review' => 'users#create_review', :as => 'create_review'
+    put '/users/:user_id/reviews/edit_review' => 'users#update_review', :as => 'update_review'
+    delete '/users/reviews/:id' => 'users#destroy_review', :as => 'destroy_review'
     resources :products
     resources :credit_cards
     resources :charges

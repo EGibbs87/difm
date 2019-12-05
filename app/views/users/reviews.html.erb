@@ -1,10 +1,12 @@
-<span class="pull-right" data-toggle="<%= !user_signed_in? ? 'tooltip' : ''%>" data-placement="top" title="Only available when signed in">
-  <%= link_to "Leave a review", new_review_path(@user.id), :class => "btn btn-outline-success pull-right #{'disabled' if !user_signed_in?}", :id => 'new-review-btn' %>
-</span>
+
 <div id="reviews-container">
+  <hr>  
+  <span class="pull-right" data-toggle="<%= !user_signed_in? || current_user.id == @user.id ? 'tooltip' : ''%>" data-placement="top" title="<%= user_signed_in? ? (current_user.id == @user.id ? 'Can\'t review self' : nil) : 'Only available when signed in' %>">
+    <%= link_to "Leave or update a review", UserReview.exists?(for_user_id: @user.id, by_user_id: current_user.id, role: "service") ? edit_review_path({:user_id => @user.id, :role => "service"}) : new_review_path({:user_id => @user.id, :role => "service"}), :class => "btn btn-outline-success pull-right #{'disabled' if !user_signed_in? || current_user.id == @user.id }", :id => 'new-review-btn' %>
+  </span>
+  <h1>Reviews for Services Provided</h1>
   <hr>
-  <h1>Reviews for Services</h1>
-  <hr>
+
 
   <div id="users-table">
     <table class="table table-hover">
@@ -18,7 +20,20 @@
         <% if @user.reviews("service").count > 0 %>
           <% @user.reviews("service").each do |sr| %>
             <tr>
-              <td><%= sr.by_user.username %></td>
+              <td>
+                <%= sr.by_user.username %><br>
+                <%= sr.created_at.strftime("%F") %>
+                <% if sr.created_at != sr.updated_at %>
+                  <br><i>last edited on <%= sr.updated_at.strftime("%F") %></i>
+                <% end %>
+                <% if sr.by_user == current_user %>
+                  <br>
+                  <a href="<%= edit_review_path({:user_id => @user.id, :role => 'service'}) %>"><span class="fa fa-pencil"></span></a>
+                  <%= link_to destroy_review_path({:id => sr.id }), :method => :delete, :data => { :confirm => "Are you sure you want to remove this review?" } do %>
+                    <span class="fa fa-remove"></span>
+                  <% end %>
+                <% end %>
+              </td>
               <td>
                 <% sr.stars.times do %>
                   <img src="<%= image_url('star.png') %>" height="15px">
@@ -42,7 +57,10 @@
   </div>
 
   <hr>
-  <h1>Reviews for Requesting Party</h1>
+  <span class="pull-right" data-toggle="<%= !user_signed_in? || current_user.id == @user.id ? 'tooltip' : ''%>" data-placement="top" title="<%= user_signed_in? ? (current_user.id == @user.id ? 'Can\'t review self' : nil) : 'Only available when signed in' %>">
+    <%= link_to "Leave or update a review", UserReview.exists?(for_user_id: @user.id, by_user_id: current_user.id, role: "request") ? edit_review_path({:user_id => @user.id, :role => "request"}) : new_review_path({:user_id => @user.id, :role => "request"}), :class => "btn btn-outline-success pull-right #{'disabled' if !user_signed_in? || current_user.id == @user.id }", :id => 'new-review-btn' %>
+  </span>
+  <h1>Reviews for Requests Made</h1>
   <hr>
 
   <div id="users-table">
@@ -57,7 +75,20 @@
         <% if @user.reviews("request").count > 0 %>
           <% @user.reviews("request").each do |rr| %>
             <tr>
-              <td><%= rr.by_user.username %></td>
+              <td>
+                <%= rr.by_user.username %><br>
+                <%= rr.created_at.strftime("%F") %>
+                <% if rr.created_at != rr.updated_at %>
+                  <br><i>last edited on <%= rr.updated_at.strftime("%F") %></i>
+                <% end %>
+                <% if rr.by_user == current_user %>
+                  <br>
+                  <a href="<%= edit_review_path({:user_id => @user.id, :role => 'request'}) %>"><span class="fa fa-pencil"></span></a>
+                  <%= link_to destroy_review_path({:id => rr.id }), :method => :delete, :data => { :confirm => "Are you sure you want to remove this review?" } do %>
+                    <span class="fa fa-remove"></span>
+                  <% end %>
+                <% end %>
+              </td>
               <td>
                 <% rr.stars.times do %>
                   <img src="<%= image_url('star.png') %>" height="15px">
