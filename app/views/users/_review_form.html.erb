@@ -1,5 +1,5 @@
 <div id="review-form">
-  <%= f.select :role, [["Select Role", nil],["They provided a service to me", "service"],["I requested a service of them", "request"]], { :selected => @review.role }, { :class => "form-control mr-sm-2", :disabled => true } %>
+  <%= f.select :role, [["Select Role", nil],["They performed a service for me", "service"],["They requested a service of me", "request"]], { :selected => @review.role }, { :class => "form-control mr-sm-2", :disabled => true } %>
   <%= f.hidden_field :role, :value => @review.role %>
   <%= f.hidden_field :stars, :value => review.stars %>
   <div id='star-container'>
