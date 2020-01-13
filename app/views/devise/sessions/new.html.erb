@@ -3,7 +3,7 @@
   <h2>Log in</h2>
 
   <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-    <%= f.email_field :login, :autofocus => true, :placeholder => "Email", :class => "form-control reg-form-field" %>
+    <%= f.text_field :login, :autofocus => true, :placeholder => "Username or Email", :class => "form-control reg-form-field" %>
 
     <%= f.password_field :password, :placeholder => "Password (min 6 characters)", :class => "form-control reg-form-field" %>
 

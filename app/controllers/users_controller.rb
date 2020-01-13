@@ -25,6 +25,9 @@ class UsersController < ApplicationController
     @user = User.find(params['user_id'])
   end
 
+  def buy_posts
+  end
+
   def create_review
     @review = UserReview.where(review_params).first_or_create
     @review.for_user_id = params[:user_id]

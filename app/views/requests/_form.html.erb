@@ -14,7 +14,8 @@
   <% end %>
 
   <br>
-  <%= f.submit "Submit", :class => "btn btn-outline-success" %>
+  <%= f.submit "Submit Request", :class => "btn btn-outline-success" %>
+  <%= link_to "Buy More Posts", buy_posts_path(current_user.id), :class => "btn btn-outline-secondary" %>
 </div>
 
 <script>

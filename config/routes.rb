@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     resources :products
     resources :credit_cards
     resources :charges
+    get '/users/:user_id/buy_posts' => 'users#buy_posts', :as => 'buy_posts'
   end
 
   # goes after /services/new to make sure "new" isn't interpreted as :id
