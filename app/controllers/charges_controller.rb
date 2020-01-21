@@ -2,6 +2,20 @@ class ChargesController < ApplicationController
   before_action :authenticate_user!
   before_action :find_product
 
+  def new_card
+    begin
+      CreditCardService.new(current_user.id, card_params).create_credit_card
+      current_user.credit_cards.where(stripe_id: stripe_card_id).first_or_create(card_params)
+    rescue Stripe::CardError => e
+      flash[:error] = e.message
+      redirect_to @product
+    end
+
+    respond_to do |format|
+      format.js { }
+    end
+  end
+
   def create
     begin
       stripe_card_id = params[:credit_card].present? ? CreditCardService.new(current_user.id, card_params).create_credit_card : charge_params[:card_id]

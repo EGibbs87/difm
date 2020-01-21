@@ -103,7 +103,7 @@ ActiveRecord::Schema.define(version: 2020_01_13_184323) do
     t.string "customer_id"
     t.string "sub_type"
     t.text "profile"
-    t.string "posts", default: "0"
+    t.string "posts", default: "1"
     t.string "username"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

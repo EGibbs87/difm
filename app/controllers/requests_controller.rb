@@ -2,6 +2,7 @@ class RequestsController < ApplicationController
   before_action :authenticate_user!, :only => [:new, :create]
   before_action :set_request, :only => [:show, :edit, :update, :destroy]
   before_action :set_classifications
+  before_action :set_products, :only => [:new, :create]
 
   def index
     sp = search_params['q'] || {}
@@ -112,5 +113,9 @@ class RequestsController < ApplicationController
 
   def search_params
     params.except(:button).permit(:distance, :button, :q => [:description_cont, :location, :classifications_name_eq])
+  end
+
+  def set_products
+    @products = Product.all
   end
 end

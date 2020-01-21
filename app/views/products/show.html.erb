@@ -1,20 +1,35 @@
-<p id="notice"><%= notice %></p>
+<div class="content-wrapper">
+  <p id="notice"><%= notice %></p>
+  <% num = @product.name.match(/\A(\d{1,2})/) %>
+  <% count = (num ? num[0] : "unlimited") %>
 
-<p>
-  <strong>Name:</strong>
-  <%= @product.name %>
-</p>
+  <%= link_to "Add New Card", "#", :data => { :toggle => "modal", :target => "#newCardModal" }, :class => "btn btn-outline-secondary" %><br><br>
 
-<p>
-  <strong>Price:</strong>
-  <%= @product.price %>
-</p>
+  <div class="card" style="min-width: 200px; max-width: 500px; margin-bottom: 10px">
+    <div class="card-header">
+      <b><%= @product.name.capitalize %></b>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><%= number_to_currency(@product.price/100.0, :precision => 2) %><% if count.to_i == 0 %>/month<% end %></li>
+      <li class="list-group-item"><% if count.to_i > 0 %><%= number_to_currency((@product.price/100.0)/count.to_i, :precision => 2) %>/post<% else %> Unlimited posts <% end %></li>
+    </ul>
+  </div>
 
-<%= render 'shared/card_and_charge_form', product: @product %>
+  <div id="charge-form-container">
+    <%= render 'shared/charge_form', product: @product %>
+  </div>
+</div>
 
-<% if current_user.credit_cards.reject { |card| card.new_record? }.any? %>
-  <%= render 'shared/charge_form', product: @product %>
-<% end %>
-
-<%= link_to 'Edit', edit_product_path(@product) %> |
-<%= link_to 'Back', products_path %>
+<!-- New Card Modal -->
+<div class="modal fade" id="newCardModal" tabindex="-1" role="dialog" aria-labelledby="newCardLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Add Card</h2>
+      </div>
+      <div class="modal-body">
+        <%= render 'shared/new_card' %>
+      </div>
+    </div>
+  </div>
+</div>
