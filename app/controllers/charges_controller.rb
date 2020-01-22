@@ -4,21 +4,22 @@ class ChargesController < ApplicationController
 
   def new_card
     begin
-      CreditCardService.new(current_user.id, card_params).create_credit_card
+      stripe_card_id = CreditCardService.new(current_user.id, card_params).create_credit_card
       current_user.credit_cards.where(stripe_id: stripe_card_id).first_or_create(card_params)
     rescue Stripe::CardError => e
       flash[:error] = e.message
-      redirect_to @product
+      redirect_to :back
     end
 
     respond_to do |format|
-      format.js { }
+      format.js { render 'products/new_card' }
     end
   end
 
   def create
     begin
-      stripe_card_id = params[:credit_card].present? ? CreditCardService.new(current_user.id, card_params).create_credit_card : charge_params[:card_id]
+      stripe_card_id = charge_params[:card_id]
+      qty = @product.qty
 
       Stripe::Charge.create(
         customer: current_user.customer_id,
@@ -27,8 +28,10 @@ class ChargesController < ApplicationController
         currency: 'usd'
       )
 
-      if params[:credit_card].present? && stripe_card_id
-        current_user.credit_cards.where(stripe_id: stripe_card_id).first_or_create(card_params)
+      if qty == "unlimited"
+        current_user.update(sub_type: "unlimited")
+      else
+        current_user.update(posts: current_user.posts.to_i + qty.to_i)
       end
       redirect_to @product
     rescue Stripe::CardError => e
@@ -48,9 +51,13 @@ class ChargesController < ApplicationController
   end
 
   def find_product
-    @product = Product.find(params[:product_id])
-  rescue ActiveRecord::RecordNotFound => e
-    flash[:error] = 'Product not found!'
-    redirect_to root_path
+    begin
+      if params[:product_id]
+        @product = Product.find(params[:product_id])
+      end
+    rescue ActiveRecord::RecordNotFound => e
+      flash[:error] = 'Product not found!'
+      redirect_to root_path
+    end
   end
 end

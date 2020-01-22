@@ -1,1 +1,5 @@
 $("#charge-form-container").html("<%= j (render 'shared/charge_form', product: Product.first) %>");
+
+$('#newCardModal').modal('hide');
+$('body').removeClass('modal-open');
+$('.modal-backdrop').remove();

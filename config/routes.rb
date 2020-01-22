@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get '/users/:user_id/reviews' => 'users#reviews', :as => 'reviews'
 
   authenticated :user do
+    resources :users, only: [:update]
     get '/services/new' => 'services#new', :as => 'new_service'
     post '/services/new' => 'services#create', :as => 'create_service'
     get '/services/:id/edit' => 'services#edit', :as => 'edit_service'  
@@ -27,18 +28,23 @@ Rails.application.routes.draw do
     post '/users/:user_id/reviews/new_review' => 'users#create_review', :as => 'create_review'
     put '/users/:user_id/reviews/edit_review' => 'users#update_review', :as => 'update_review'
     delete '/users/reviews/:id' => 'users#destroy_review', :as => 'destroy_review'
-    resources :products
     resources :credit_cards
     resources :charges
     post '/new_card' => 'charges#new_card', :as => 'new_card'
+    get '/products/:id' => 'products#show'
     # get '/users/:user_id/buy_posts' => 'users#buy_posts', :as => 'buy_posts'
+  end
+
+  # protect any routes we want to be admin-only level
+  authenticated :user, lambda { |u| u.admin? } do
+    resources :products
   end
 
   # goes after /services/new to make sure "new" isn't interpreted as :id
   get '/services/:id' => 'services#show', :as => 'service'
   get '/requests/:id' => 'requests#show', :as => 'request'
 
-  devise_for :users
+  devise_for :users, :controllers => { :registrations => 'registrations' }
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
   mount StripeEvent::Engine, at: '/payments'

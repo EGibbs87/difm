@@ -1,6 +1,23 @@
 class UsersController < ApplicationController
   before_action :set_review, :only => [:destroy_review]
 
+  def edit
+    @credit_cards = current_user.credit_cards
+  end
+
+  def update
+    # update for general items
+    if params['gen-submit']
+      respond_to do |format|
+        if current_user.update(user_params)
+          format.html { redirect_to edit_registration_path(resource), :notice => "User updated successfully!" }
+        else
+          format.html { redirect_to :back, :alert => current_user.errors}
+        end
+      end
+    end
+  end
+
   def users
     sp = user_search_params['q'] || {}
     @q = User.ransack(sp)
@@ -87,5 +104,9 @@ class UsersController < ApplicationController
 
   def review_params
     params.require(:user_review).permit(:content, :stars, :for_user_id, :by_user_id, :role)
+  end
+
+  def user_params
+    params.require(:user).permit(:show_phone_request, :show_email_request, :show_phone_service, :show_email_service, :profile)
   end
 end

@@ -1,41 +1,70 @@
 <div class="inner-content-wrapper">
-  <h2>Edit <%= resource_name.to_s.humanize %></h2>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" id="general-tab" href="#general" role="tab" aria-controls="general" aria-selected="true" data-toggle="tab">General</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="payment-tab" href="#payment" role="tab" aria-controls="payment" aria-selected="false" data-toggle="tab">Payment</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="account-tab" href="#account" role="tab" aria-controls="account" aria-selected="false" data-toggle="tab">Account</a>
+    </li>
+  </ul>
 
-  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-    <%= render "devise/shared/error_messages", resource: resource %>
-    
-    <%= f.text_field :username, :autofocus => true, :placeholder => "Username", :class => "form-control reg-form-field" %>
+  <%= render "devise/shared/error_messages", resource: resource %>
 
-    <%= f.email_field :email, :autofocus => true, :placeholder => "Email", :class => "form-control reg-form-field" %>
 
-    <%= f.text_field :phone, :placeholder => "Contact #", :class => "form-control reg-form-field" %>
+  <div class="tab-content" id="tabContent">
+    <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+      <%= form_for(current_user, { method: :put }) do |f| %>
+        
+        <h4>Show phone number preferences</h4>
 
-    <h4>Show phone number preferences</h4>
+        <%= f.check_box :show_phone_service %> Services<br>
 
-    <%= f.check_box :show_phone_service %> Services<br>
+        <%= f.check_box :show_phone_request %> Requests<br>
 
-    <%= f.check_box :show_phone_request %> Requests<br>
+        <h4>Show email address preferences</h4>
 
-    <h4>Show email address preferences</h4>
+        <%= f.check_box :show_email_service %> Services<br>
 
-    <%= f.check_box :show_email_service %> Services<br>
+        <%= f.check_box :show_email_request %> Requests<br>
 
-    <%= f.check_box :show_email_request %> Requests<br>
+        <%= f.text_area :profile, :placeholder => "Personal summary (optional)", :class => "form-control reg-form-field" %>
 
-    <%= f.text_area :profile, :placeholder => "Personal summary (optional)", :class => "form-control reg-form-field" %>
+        <%= f.submit "Update", :class => "btn btn-outline-success", :name => "gen-submit" %>
+      <% end %>
 
-    <%= f.password_field :password, :placeholder => "Password (min 6 characters)", :class => "form-control reg-form-field" %>
 
-    <%= f.password_field :password_confirmation, :placeholder => "Confirm password", :class => "form-control reg-form-field" %>
+    </div>
+    <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
+      <ul>
+        <% current_user.credit_cards.each do |cc| %>
+          <li><%= "*" + cc.digits %> <%= link_to "Remove", credit_card_path(cc.id), :method => :delete %></li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="tab-pane fade" id="account" role="tabpanel" aria-labelledby="account-tab">
+      <%= form_for(resource, as: resource_name, controller: :registrations_controller, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+        
+        <%= text_field_tag 'username', current_user.username, :disabled => true, :class => "form-control reg-form-field" %>
+        
+        <%= text_field_tag 'email', current_user.email, :disabled => true, :class => "form-control reg-form-field" %>
 
-    <%= f.password_field :current_password, :placeholder => "Current password", :class => "form-control reg-form-field" %>
+        <%= f.text_field :phone, :placeholder => "Contact #", :class => "form-control reg-form-field" %>
 
-    <%= f.submit "Update", :class => "btn btn-outline-success" %>
-  <% end %>
+        <%= f.password_field :password, :placeholder => "New password (min 8 characters)", :class => "form-control reg-form-field" %>
 
-  <h3>Cancel my account</h3>
+        <%= f.password_field :password_confirmation, :placeholder => "Confirm new password", :class => "form-control reg-form-field" %>
 
-  <p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, :class => "btn btn-outline-danger", method: :delete %></p>
+        <%= f.password_field :current_password, :placeholder => "Current password", :class => "form-control reg-form-field" %>
 
-  <%= link_to "Back", :back %>
+        <%= f.submit "Update", :class => "btn btn-outline-success", :name => "acct-submit" %>
+      <% end %>
+
+      <h3>Cancel my account</h3>
+
+      <p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, :class => "btn btn-outline-danger", method: :delete %></p>    
+    </div>
+  </div>
 </div>
