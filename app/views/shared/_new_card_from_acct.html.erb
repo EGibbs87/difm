@@ -1,0 +1,8 @@
+<%= form_for current_user.credit_cards.new, :url => new_card_from_acct_path, :remote => true do |f| %>
+  <%= f.text_field :number, placeholder: 'Card number', :class => "form-control" %>
+  <%= f.text_field :month, placeholder: 'Expiration month', :class => "form-control" %>
+  <%= f.text_field :year, placeholder: 'Expiration year', :class => "form-control" %>
+  <%= f.text_field :cvc, placeholder: 'CVC', :class => "form-control" %>
+
+  <%= f.button :submit, data: { 'disable-with' => 'Please wait...' }, :class => "btn btn-outline-success", :style => "margin-top: 8px" %>
+<% end %>

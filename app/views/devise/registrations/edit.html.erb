@@ -18,13 +18,13 @@
     <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
       <%= form_for(current_user, { method: :put }) do |f| %>
         
-        <h4>Show phone number preferences</h4>
+        <h4>Show phone for:</h4>
 
-        <%= f.check_box :show_phone_service %> Services<br>
+        <%= f.check_box :show_phone_service, :class => 'slideThree' %> Services<br>
 
         <%= f.check_box :show_phone_request %> Requests<br>
 
-        <h4>Show email address preferences</h4>
+        <h4>Show email address for:</h4>
 
         <%= f.check_box :show_email_service %> Services<br>
 
@@ -38,10 +38,10 @@
 
     </div>
     <div class="tab-pane fade" id="payment" role="tabpanel" aria-labelledby="payment-tab">
-      <ul>
-        <% current_user.credit_cards.each do |cc| %>
-          <li><%= "*" + cc.digits %> <%= link_to "Remove", credit_card_path(cc.id), :method => :delete %></li>
-        <% end %>
+      <%= link_to "Add New Card", "#", :data => { :toggle => "modal", :target => "#newCardModal" }, :class => "btn btn-outline-secondary" %><br><br>
+
+      <ul id="card-list">
+        <%= render 'credit_cards/credit_card_list' %>
       </ul>
     </div>
     <div class="tab-pane fade" id="account" role="tabpanel" aria-labelledby="account-tab">
@@ -65,6 +65,20 @@
       <h3>Cancel my account</h3>
 
       <p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, :class => "btn btn-outline-danger", method: :delete %></p>    
+    </div>
+  </div>
+</div>
+
+<!-- New Card Modal -->
+<div class="modal fade" id="newCardModal" tabindex="-1" role="dialog" aria-labelledby="newCardLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Add Card</h2>
+      </div>
+      <div class="modal-body">
+        <%= render 'shared/new_card_from_acct' %>
+      </div>
     </div>
   </div>
 </div>

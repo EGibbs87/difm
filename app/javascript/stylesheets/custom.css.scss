@@ -212,3 +212,14 @@ h1 {
   margin-top: 8px !important;
   margin-bottom: 8px !important;
 }
+
+.list-group-item:hover {
+  background-color: red !important;
+  color: white !important;
+  transition: 1s;
+}
+
+.rm-cc {
+  text-decoration: none !important;
+  color: black !important;
+}

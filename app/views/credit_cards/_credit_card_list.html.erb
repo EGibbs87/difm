@@ -1,0 +1,7 @@
+<% current_user.credit_cards.each do |cc| %>
+  <%= link_to credit_card_path(cc.id), :method => :delete, :data => {:confirm => "Remove this credit card from your profile?" }, :class => "rm-cc", :remote => true do %>
+    <li class="list-group-item" style="max-width: 500px"><%= "*" + cc.digits %> 
+      <span class="fa fa-minus pull-right" style="padding-right: 3px; color: white"></span>
+    </li>
+  <% end %>
+<% end %>
