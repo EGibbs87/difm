@@ -5,8 +5,7 @@
 <div class="container">
   <div class="row">
     <% @products.each do |product| %>
-      <% num = product.name.match(/\A(\d{1,2})/) %>
-      <% count = (num ? num[0] : "unlimited") %>
+      <% count = product.qty %>
       <div class="col-sm-12 col-md-4 col-lg-3">
         <div class="card" style="min-width: 200px; margin-bottom: 10px">
           <div class="card-header">
