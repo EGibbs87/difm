@@ -5,8 +5,10 @@
   <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
     <%= f.text_field :login, :autofocus => true, :placeholder => "Username or Email", :class => "form-control reg-form-field" %>
 
-    <%= f.password_field :password, :placeholder => "Password (min 6 characters)", :class => "form-control reg-form-field" %>
+    <%= f.password_field :password, :placeholder => "Password (min 8 characters)", :class => "form-control reg-form-field" %>
 
     <%= f.submit "Login", :class => "btn btn-outline-danger" %>
   <% end %>
+
+  <br /><%= link_to "Forgot your password?", new_password_path(resource_name) %>
 </div>

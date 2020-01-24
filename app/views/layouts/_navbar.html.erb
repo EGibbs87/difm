@@ -48,6 +48,7 @@
         <div class="modal-body">
           <%= f.text_field :login, :class => "form-control mr-sm-2", :placeholder => "Username or Email" %><br>
           <%= f.password_field :password, :class => "form-control mr-sm-2", :placeholder => "Password" %><br>
+          <%= link_to "Forgot your password?", new_password_path(resource_name) %>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary my-2 my-sm-0" data-dismiss="modal">Cancel</button>
