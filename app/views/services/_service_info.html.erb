@@ -1,0 +1,28 @@
+<span><b>User: </b></span><%= service.user.username %> <%= render :partial => 'layouts/stars', :locals => { :user => service.user, :role => "service" } %>
+<br>
+<span><b>Zip Code: </b></span><%= service.location %><br>
+<span><b>Range: </b></span><%= service.range %><% if service.range %> mi<% end %><br>
+<span><b>Availability: </b></span><%= service.availability %><br>
+<span><b>Description: </b></span><%= service.description %><br>
+<span><b>Classifications: </b></span><%= service.classifications.collect(&:name).join(", ") %><br>
+<% if user_signed_in? %>
+  <% if service.user.show_email_service %>
+    <span><b>Contact Email: </b></span><%= service.user.email %><br>
+  <% end %>
+  <% if service.user.show_phone_service %>
+    <span><b>Contact Phone: </b></span><%= service.user.phone %><br>
+  <% end %>
+  <% if current_user.id == service.user_id %>
+    <b>Time remaining:</b>  <%= (service.expiration - Date.today).to_i %> day<% if (service.expiration - Date.today).to_i != 1 %>s<% end %><br>
+    <div id="renew-wrapper">
+      <button type="button" style="margin-top: 5px; margin-bottom: 5px" class="btn btn-outline-success" data-toggle="modal" data-target="#renewModal">Renew</button><br>
+      <% if current_user.sub_type.nil? %>
+        <i style="<%= current_user.posts == "0" ? 'color: red' : '' %>"><b><%= current_user.posts %></b> post<%= current_user.posts == "1" ? "" : "s" %> remaining</i>
+      <% elsif current_user.sub_type == "unlimited" %>
+        <i><b>Unlimited</b> posts remaining for this month</i>
+      <% end %>
+      <br>
+    </div>
+    <%= link_to "Edit", edit_service_path(service) %> | <%= link_to "Remove", destroy_service_path(service), :method => :delete, :data => { :confirm => "Are you sure?" } %>
+  <% end %>
+<% end %>

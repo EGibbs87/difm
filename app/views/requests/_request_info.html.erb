@@ -1,0 +1,28 @@
+<span><b>User: </b></span><%= request.user.username %> <%= render :partial => 'layouts/stars', :locals => { :user => request.user, :role => "request" } %>
+<br>
+<span><b>Zip Code: </b></span><%= request.location %><br>
+<span><b>Range: </b></span><%= request.range %><% if request.range %> mi<% end %><br>
+<span><b>Timeframe: </b></span><%= request.timeframe %><br>
+<span><b>Description: </b></span><%= request.description %><br>
+<span><b>Classifications: </b></span><%= request.classifications.collect(&:name).join(", ") %><br>
+<% if user_signed_in? %>
+  <% if request.user.show_email_request %>
+    <span><b>Contact Email: </b></span><%= request.user.email %><br>
+  <% end %>
+  <% if request.user.show_phone_request %>
+    <span><b>Contact Phone: </b></span><%= request.user.phone %><br>
+  <% end %>
+  <% if current_user.id == request.user_id %>
+    <b>Time remaining:</b>  <%= (request.expiration - Date.today).to_i %> day<% if (request.expiration - Date.today).to_i != 1 %>s<% end %><br>
+    <div id="renew-wrapper">
+      <button type="button" style="margin-top: 5px; margin-bottom: 5px" class="btn btn-outline-success" data-toggle="modal" data-target="#renewModal">Renew</button><br>
+      <% if current_user.sub_type.nil? %>
+        <i style="<%= current_user.posts == "0" ? 'color: red' : '' %>"><b><%= current_user.posts %></b> post<%= current_user.posts == "1" ? "" : "s" %> remaining</i>
+      <% elsif current_user.sub_type == "unlimited" %>
+        <i><b>Unlimited</b> posts remaining for this month</i>
+      <% end %>
+      <br>
+    </div>
+    <%= link_to "Edit", edit_request_path(request) %> | <%= link_to "Remove", destroy_request_path(request), :method => :delete, :data => { :confirm => "Are you sure?" } %>
+  <% end %>
+<% end %>

@@ -1,8 +1,8 @@
 class RequestsController < ApplicationController
   before_action :authenticate_user!, :only => [:new, :create]
-  before_action :set_request, :only => [:show, :edit, :update, :destroy]
+  before_action :set_request, :only => [:show, :edit, :update, :renew, :destroy]
   before_action :set_classifications
-  before_action :set_products, :only => [:new, :create]
+  before_action :set_products, :only => [:new, :create, :edit]
 
   def index
     sp = search_params['q'] || {}
@@ -22,19 +22,24 @@ class RequestsController < ApplicationController
 
   def create
     @classifications = Classification.all
-    @request = current_user.requests.new(request_params.except(:classifications))
+    @request = current_user.requests.new(request_params.except(:classifications, :expiration))
     c_ids = request_params[:classifications].map(&:"to_i")
     c_ids.each do |c|
       next if c < 1
       @request.classifications << @classifications.find(c)
     end
+    expiration = [request_params[:expiration].to_i, current_user.posts].min
+    @request.expiration = Date.today + expiration.weeks
 
     respond_to do |format|
       if @request.save
-        format.html { redirect_to @request, notice: "Request successfully created" }
+        current_user.update(posts: current_user.posts - expiration)
+        flash[:success] = "Request successfully created!"
+        format.html { redirect_to @request }
         format.json { render :show, status: :created, location: @request }
       else
-        format.html { render :new, :alert => @request.errors }
+        flash[:alert] = @request.errors.messages.map { |k,v| v }.flatten.uniq.join("; ")
+        format.html { render :new }
         format.json { render :json => @request.errors, :status => :unprocessable_entity }
       end
     end
@@ -45,13 +50,38 @@ class RequestsController < ApplicationController
 
   def edit
     if @request.user.id != current_user.id
-      redirect_to(dashboard_path, :alert => "You cannot edit another user's listing")
+      flash[:alert] = "You cannot edit another user's listing"
+      redirect_to(dashboard_path)
+    end
+  end
+
+  def renew
+    if @request.user.id != current_user.id
+      flash[:alert] = "You cannot edit another user's listing"
+    end
+
+    expiration = [request_params[:expiration].to_i, current_user.posts].min
+    start_date = [Date.today, @request.expiration].max
+    @request.expiration = start_date + expiration.weeks
+    
+    respond_to do |format|
+      if @request.save
+        current_user.update(posts: current_user.posts - expiration)
+        flash[:success] = "Request renewed!"
+        format.html { redirect_to @request }
+        format.js { }
+      else
+        flash[:alert] = @request.errors.messages.map { |k,v| v }.flatten.uniq.join("; ")
+        format.html { redirect_to @request }
+        format.js { }
+      end
     end
   end
 
   def update
     if @request.user.id != current_user.id
-      redirect_to(dashboard_path, :alert => "You cannot edit another user's listing")
+      flash[:alert] = "You cannot edit another user's listing"
+      redirect_to(dashboard_path)
     end
 
     # collect appropriate classification IDs
@@ -71,11 +101,13 @@ class RequestsController < ApplicationController
     end
 
     respond_to do |format|
-      if @request.update(request_param.except(:classifications))
-        format.html { redirect_to @request, notice: "Request successfully updated" }
+      if @request.update(request_params.except(:classifications))
+        flash[:success] = "Request successfully updated!"
+        format.html { redirect_to @request }
         format.json { render :show, status: :created, location: @request }
       else
-        format.html { render :update, :notice => @request.errors }
+        flash[:alert] = @request.errors.messages.map { |k, v| v }.flatten.uniq.join("; ")
+        format.html { render :update }
         format.json { render :json => @request.errors, :status => :unprocessable_entity }
       end
     end
@@ -83,12 +115,14 @@ class RequestsController < ApplicationController
 
   def destroy
     if @request.user.id != current_user.id
-      redirect_to dashboard_path, :alert => "You cannot edit another user's listing"
+      flash[:alert] = "You cannot edit another user's listing"
+      redirect_to dashboard_path
     end
 
     @request.destroy
     respond_to do |format|
-      format.html { redirect_to dashboard_path, :notice => 'Request listing was successfully destroyed' }
+      flash[:success] = "Requst listing was successfully removed"
+      format.html { redirect_to dashboard_path }
       format.json { head :no_content }
     end
   end
@@ -108,7 +142,7 @@ class RequestsController < ApplicationController
   end
 
   def request_params
-    params.require(:request).permit(:description, :location, :range, :timeframe, :classifications => [])
+    params.require(:request).permit(:description, :location, :range, :timeframe, :expiration, :classifications => [])
   end
 
   def search_params

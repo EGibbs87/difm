@@ -4,6 +4,11 @@
   <%= f.text_field :range, :class => "form-control mr-sm-2 form-new", :placeholder => "Range (mi)", :disabled => current_user.posts == "0" %>
   <%= f.text_field :timeframe, :class => "form-control mr-sm-2 form-new", :placeholder => "When service is needed", :disabled => current_user.posts == "0" %>
   <%= f.text_area :description, :class => "form-control mr-sm-2 form-new", :placeholder => "Request description", :disabled => current_user.posts == "0" %>
+  <% if action_name == "edit" %>
+    <%= f.hidden_field :expiration, :value => @request.expiration %>
+  <% else %>
+    <%= f.number_field :expiration, :class => "form-control mr-sm-2 form-new", :placeholder => "Weeks to keep request active (COST: 1 post/wk)", :disabled => current_user.posts == "0", :min => 1, :max => current_user.posts.to_i %>
+  <% end %>
   <span id="classification-header"><b>Classifications:</b></span><%= f.collection_check_boxes :classifications, classifications, :id, :name, {} do |c| %>
     <%= c.label(class: "check_box") do %>
       <div class="col-xs-4 form_check_boxes">
@@ -14,14 +19,16 @@
   <% end %>
 
   <br>
-  <%= f.submit "Submit Request", :class => "btn btn-outline-success", :disabled => current_user.posts == "0" %>
-  <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#buyPostsModal" style="margin-left: 8px">
+  <%= f.submit action_name == "edit" ? "Update" : "Submit request", :class => "btn btn-outline-success", :disabled => current_user.posts == "0" %>
+  <% if action_name != "edit" %>
+    <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#buyPostsModal" style="margin-left: 8px">
     Buy More Posts
-  </button><br>
-  <% if current_user.sub_type.nil? %>
-    <i style="<%= current_user.posts == "0" ? 'color: red' : '' %>"><b><%= current_user.posts %></b> post<%= current_user.posts == "1" ? "" : "s" %> remaining</i>
-  <% elsif current_user.sub_type == "unlimited" %>
-    <i><b>Unlimited</b> posts remaining for this month</i>
+    </button><br>
+    <% if current_user.sub_type.nil? %>
+      <i style="<%= current_user.posts == "0" ? 'color: red' : '' %>"><b><%= current_user.posts %></b> post<%= current_user.posts == "1" ? "" : "s" %> remaining</i>
+    <% elsif current_user.sub_type == "unlimited" %>
+      <i><b>Unlimited</b> posts remaining for this month</i>
+    <% end %>
   <% end %>
   <br>
 </div>

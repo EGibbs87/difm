@@ -33,6 +33,8 @@ Rails.application.routes.draw do
     post '/new_card' => 'charges#new_card', :as => 'new_card'
     get '/products/:id' => 'products#show'
     post '/new_card_from_acct' => 'credit_cards#new_card_from_acct', :as => 'new_card_from_acct'
+    put '/requests/renew/request/:id' => 'requests#renew'
+    put '/services/renew/service/:id' => 'services#renew'
     # get '/users/:user_id/buy_posts' => 'users#buy_posts', :as => 'buy_posts'
   end
 
