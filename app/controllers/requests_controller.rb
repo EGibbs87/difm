@@ -1,6 +1,6 @@
 class RequestsController < ApplicationController
   before_action :authenticate_user!, :only => [:new, :create]
-  before_action :set_request, :only => [:show, :edit, :update, :renew, :destroy]
+  before_action :set_request, :only => [:show, :edit, :update, :renew, :toggle_active, :destroy]
   before_action :set_classifications
   before_action :set_products, :only => [:new, :create, :edit]
 
@@ -63,6 +63,7 @@ class RequestsController < ApplicationController
     expiration = [request_params[:expiration].to_i, current_user.posts].min
     start_date = [Date.today, @request.expiration].max
     @request.expiration = start_date + expiration.weeks
+    @request.active = true
     
     respond_to do |format|
       if @request.save
@@ -110,6 +111,23 @@ class RequestsController < ApplicationController
         format.html { render :update }
         format.json { render :json => @request.errors, :status => :unprocessable_entity }
       end
+    end
+  end
+
+  def toggle_active
+    if !@request.active && (Date.today > @request.expiration)
+      @success = "false"
+      @toggle = "off"
+      flash[:notice] = "You must renew expired posts to activate"
+    else
+      @success = "true"
+      @toggle = @request.active ? "off" : "on"
+      flash[:success] = "Post has been #{@request.active ? 'deactivated' : 'activated'}"
+      @request.update(active: !@request.active)
+    end
+    respond_to do |format|
+      format.html { redirect_to @request }
+      format.js { }
     end
   end
 

@@ -13,9 +13,11 @@
     <span><b>Contact Phone: </b></span><%= service.user.phone %><br>
   <% end %>
   <% if current_user.id == service.user_id %>
-    <b>Time remaining:</b>  <%= (service.expiration - Date.today).to_i %> day<% if (service.expiration - Date.today).to_i != 1 %>s<% end %><br>
+    <b>Time remaining:</b>  <% if (service.expiration - Date.today).to_i > 0 %><%= (service.expiration - Date.today).to_i %> day<% if (service.expiration - Date.today).to_i != 1 %>s<% end %><% else %>Expired<% end %><br>
+    <b>Status:</b>  <span id="active-status"><% if service.active %>Active<% else %>Inactive<% end %></span>
     <div id="renew-wrapper">
-      <button type="button" style="margin-top: 5px; margin-bottom: 5px" class="btn btn-outline-success" data-toggle="modal" data-target="#renewModal">Renew</button><br>
+      <button type="button" style="margin-top: 5px; margin-bottom: 5px" class="btn btn-outline-success" data-toggle="modal" data-target="#renewModal">Renew</button>
+      <%= link_to "#{service.active ? 'Deactivate' : 'Activate'}", toggle_active_service_path(service), :class => "btn btn-outline-danger #{!service.active && (Date.today - service.expiration).to_i > 0 ? 'disabled' : ''}", :id => "toggle-active-btn", :remote => true %><br>
       <% if current_user.sub_type.nil? %>
         <i style="<%= current_user.posts == "0" ? 'color: red' : '' %>"><b><%= current_user.posts %></b> post<%= current_user.posts == "1" ? "" : "s" %> remaining</i>
       <% elsif current_user.sub_type == "unlimited" %>
@@ -23,6 +25,6 @@
       <% end %>
       <br>
     </div>
-    <%= link_to "Edit", edit_service_path(service) %> | <%= link_to "Remove", destroy_service_path(service), :method => :delete, :data => { :confirm => "Are you sure?" } %>
+    <%= link_to "Edit", edit_service_path(service) %>
   <% end %>
 <% end %>

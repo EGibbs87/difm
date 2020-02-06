@@ -35,7 +35,8 @@ Rails.application.routes.draw do
     post '/new_card_from_acct' => 'credit_cards#new_card_from_acct', :as => 'new_card_from_acct'
     put '/requests/renew/request/:id' => 'requests#renew'
     put '/services/renew/service/:id' => 'services#renew'
-    # get '/users/:user_id/buy_posts' => 'users#buy_posts', :as => 'buy_posts'
+    get '/requests/toggle_active/:id' => 'requests#toggle_active', :as => 'toggle_active_request'
+    get '/services/toggle_active/:id' => 'services#toggle_active', :as => 'toggle_active_service'
   end
 
   # protect any routes we want to be admin-only level

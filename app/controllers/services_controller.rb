@@ -1,6 +1,6 @@
 class ServicesController < ApplicationController
   before_action :authenticate_user!, :only => [:new, :create]
-  before_action :set_service, :only => [:show, :edit, :update, :renew, :destroy]
+  before_action :set_service, :only => [:show, :edit, :update, :renew, :toggle_active, :destroy]
   before_action :set_classifications
   before_action :set_products, :only => [:new, :create, :edit]
 
@@ -63,6 +63,7 @@ class ServicesController < ApplicationController
     expiration = [service_params[:expiration].to_i, current_user.posts].min
     start_date = [Date.today, @service.expiration].max
     @service.expiration = start_date + expiration.weeks
+    @service.active = true
     
     respond_to do |format|
       if @service.save
@@ -111,6 +112,23 @@ class ServicesController < ApplicationController
         format.html { render :edit }
         format.json { render :json => @service.errors, :status => :unprocessable_entity }
       end
+    end
+  end
+
+  def toggle_active
+    if !@service.active && (Date.today > @service.expiration)
+      @success = "false"
+      @toggle = "off"
+      flash[:notice] = "You must renew expired posts to activate"
+    else
+      @success = "true"
+      @toggle = @service.active ? "off" : "on"
+      flash[:success] = "Post has been #{@service.active ? 'deactivated' : 'activated'}"
+      @service.update(active: !@service.active)
+    end
+    respond_to do |format|
+      format.html { redirect_to @service }
+      format.js { }
     end
   end
 

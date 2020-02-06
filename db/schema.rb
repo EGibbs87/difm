@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_28_191058) do
+ActiveRecord::Schema.define(version: 2020_02_06_153108) do
 
   create_table "classifications", force: :cascade do |t|
     t.string "name"
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 2020_01_28_191058) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.date "expiration"
+    t.boolean "active", default: true
     t.index ["user_id"], name: "index_requests_on_user_id"
   end
 
@@ -74,6 +75,7 @@ ActiveRecord::Schema.define(version: 2020_01_28_191058) do
     t.float "longitude"
     t.float "range"
     t.date "expiration"
+    t.boolean "active", default: true
     t.index ["user_id"], name: "index_services_on_user_id"
   end
 
