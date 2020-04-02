@@ -1,0 +1,3 @@
+<% flash.each do |k,v| %>
+  <p class="<%= k %> <% if k == 'alert' %>alert-danger<% elsif k == 'success'%>alert-success<% end %>"><span style="margin-left: 8px"><%= v %></span></p>
+<% end %>

@@ -4,8 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :services
-  has_many :requests
+  has_many :services, :dependent => :destroy
+  has_many :requests, :dependent => :destroy
   has_many :reviews_for, :class_name => "UserReview", :foreign_key => "for_user_id"
   has_many :reviews_by, :class_name => "UserReview", :foreign_key => "by_user_id"
 

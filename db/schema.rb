@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_13_184323) do
+ActiveRecord::Schema.define(version: 2020_02_06_153108) do
 
   create_table "classifications", force: :cascade do |t|
     t.string "name"
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 2020_01_13_184323) do
     t.decimal "price"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "qty"
   end
 
   create_table "requests", force: :cascade do |t|
@@ -58,6 +59,8 @@ ActiveRecord::Schema.define(version: 2020_01_13_184323) do
     t.float "range"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.date "expiration"
+    t.boolean "active", default: true
     t.index ["user_id"], name: "index_requests_on_user_id"
   end
 
@@ -71,6 +74,8 @@ ActiveRecord::Schema.define(version: 2020_01_13_184323) do
     t.float "latitude"
     t.float "longitude"
     t.float "range"
+    t.date "expiration"
+    t.boolean "active", default: true
     t.index ["user_id"], name: "index_services_on_user_id"
   end
 
@@ -103,7 +108,7 @@ ActiveRecord::Schema.define(version: 2020_01_13_184323) do
     t.string "customer_id"
     t.string "sub_type"
     t.text "profile"
-    t.string "posts", default: "0"
+    t.string "posts", default: "1"
     t.string "username"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

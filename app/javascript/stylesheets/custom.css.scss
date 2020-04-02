@@ -19,6 +19,7 @@ html, body {
 .inner-content-wrapper {
   margin-left: 20px;
   margin-right: 15px;
+  margin-bottom: 15px !important;
 }
 
 #sticky-footer {
@@ -160,6 +161,7 @@ html, body {
   display: block;
   text-align: center;
   margin-top: 8px;
+  margin-bottom: 8px;
 }
 
 #user-search {
@@ -167,8 +169,8 @@ html, body {
 }
 
 #new-service-btn, #new-request-btn, #new-review-btn {
-  margin-top: 10px;
-  margin-bottom: 10px;
+  /*margin-top: 8px;*/
+  /*margin-bottom: 8px;*/
   margin-right: 10px;
 }
 
@@ -199,4 +201,27 @@ html, body {
 
 h1 {
   text-align: center;
+}
+
+.content-wrapper {
+  margin-left: 8px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
+.tab-pane {
+  margin-left: 16px !important;
+  margin-top: 8px !important;
+  margin-bottom: 8px !important;
+}
+
+.list-group-item.cc:hover {
+  background-color: red !important;
+  color: white !important;
+  transition: 1s;
+}
+
+.rm-cc {
+  text-decoration: none !important;
+  color: black !important;
 }

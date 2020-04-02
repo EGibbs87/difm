@@ -9,12 +9,12 @@
     <%= button_tag :type => "submit", :class => "form-control", :id => "service-search-btn", :name => nil do %>
       <span class="fa fa-search" style="padding-right: 3px"></span>
     <% end %>
+    <span class="pull-right" data-toggle="<%= !user_signed_in? ? 'tooltip' : '' %>" data-placement="top" title="Only available when signed in">
+      <%= link_to "List a service", new_service_path, :class => "btn btn-outline-success pull-right #{'disabled' if !user_signed_in?}", :id => 'new-service-btn' %>
+    </span>
   <% end %>
 </div>
 
-<span class="pull-right" data-toggle="<%= !user_signed_in? ? 'tooltip' : '' %>" data-placement="top" title="Only available when signed in">
-  <%= link_to "List a service", new_service_path, :class => "btn btn-outline-success pull-right #{'disabled' if !user_signed_in?}", :id => 'new-service-btn' %>
-</span>
 
 <div id="services-table">
   <%= render 'services/services_table', :services => @services %>

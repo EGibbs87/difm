@@ -1,7 +1,8 @@
 class ServicesController < ApplicationController
   before_action :authenticate_user!, :only => [:new, :create]
-  before_action :set_service, :only => [:show, :edit, :update, :destroy]
+  before_action :set_service, :only => [:show, :edit, :update, :renew, :toggle_active, :destroy]
   before_action :set_classifications
+  before_action :set_products, :only => [:new, :create, :edit]
 
   def index
     sp = search_params['q'] || {}
@@ -27,13 +28,18 @@ class ServicesController < ApplicationController
       next if c < 1
       @service.classifications << @classifications.find(c)
     end
+    expiration = [service_params[:expiration].to_i, current_user.posts].min
+    @service.expiration = Date.today + expiration.weeks
 
     respond_to do |format|
       if @service.save
-        format.html { redirect_to @service, notice: "Service successfully created" }
+        current_user.update(posts: current_user.posts - expiration)
+        flash[:success] = "Service successfully created"
+        format.html { redirect_to @service }
         format.json { render :show, status: :created, location: @service }
       else
-        format.html { render :new, :alert => @service.errors }
+        flash[:alert] = @service.errors.messages.map { |k,v| v }.flatten.uniq.join("; ")
+        format.html { render :new }
         format.json { render :json => @service.errors, :status => :unprocessable_entity }
       end
     end
@@ -44,13 +50,39 @@ class ServicesController < ApplicationController
 
   def edit
     if @service.user.id != current_user.id
-      redirect_to(dashboard_path, :alert => "You cannot edit another user's listing")
+      flash[:alert] = "You cannot edit another user's listing"
+      redirect_to(dashboard_path)
+    end
+  end
+
+  def renew
+    if @service.user.id != current_user.id
+      flash[:alert] = "You cannot edit another user's listing"
+    end
+
+    expiration = [service_params[:expiration].to_i, current_user.posts].min
+    start_date = [Date.today, @service.expiration].max
+    @service.expiration = start_date + expiration.weeks
+    @service.active = true
+    
+    respond_to do |format|
+      if @service.save
+        current_user.update(posts: current_user.posts - expiration)
+        flash[:success] = "Listing renewed!"
+        format.html { redirect_to @service }
+        format.js { }
+      else
+        flash[:alert] = @service.errors.messages.map { |k,v| v }.flatten.uniq.join("; ")
+        format.html { redirect_to @service }
+        format.js { }
+      end
     end
   end
 
   def update
     if @service.user.id != current_user.id
-      redirect_to(dashboard_path, :alert => "You cannot edit another user's listing")
+      flash[:alert] = "You cannot edit another user's listing"
+      redirect_to(dashboard_path)
     end
 
     # collect appropriate classification IDs
@@ -70,24 +102,47 @@ class ServicesController < ApplicationController
     end
 
     respond_to do |format|
-      if @service.update(service_param.except(:classifications))
-        format.html { redirect_to @service, notice: "Service successfully updated" }
+      if @service.update(service_params.except(:classifications))
+        flash[:success] = "Service successfully updated"
+        format.html { redirect_to @service }
         format.json { render :show, status: :created, location: @service }
       else
-        format.html { render :update, :notice => @service.errors }
+        set_products
+        flash[:alert] = @service.errors.messages.map { |k,v| v }.flatten.uniq.join("; ")
+        format.html { render :edit }
         format.json { render :json => @service.errors, :status => :unprocessable_entity }
       end
     end
   end
 
+  def toggle_active
+    if !@service.active && (Date.today > @service.expiration)
+      @success = "false"
+      @toggle = "off"
+      flash[:notice] = "You must renew expired posts to activate"
+    else
+      @success = "true"
+      @toggle = @service.active ? "off" : "on"
+      flash[:success] = "Post has been #{@service.active ? 'deactivated' : 'activated'}"
+      @service.update(active: !@service.active)
+    end
+    respond_to do |format|
+      format.html { redirect_to @service }
+      format.js { }
+    end
+  end
+
   def destroy
     if @service.user.id != current_user.id
-      redirect_to dashboard_path, :alert => "You cannot edit another user's listing"
+      flash[:alert] = "You cannot edit another user's listing"
+
+      redirect_to dashboard_path
     end
 
     @service.destroy
     respond_to do |format|
-      format.html { redirect_to dashboard_path, :notice => 'Service listing was successfully destroyed' }
+      flash[:success] = "Service listing was successfully removed"
+      format.html { redirect_to dashboard_path }
       format.json { head :no_content }
     end
   end
@@ -107,10 +162,15 @@ class ServicesController < ApplicationController
   end
 
   def service_params
-    params.require(:service).permit(:description, :location, :range, :availability, :classifications => [])
+    params.require(:service).permit(:description, :location, :range, :availability, :expiration, :classifications => [])
   end
 
   def search_params
     params.except(:button).permit(:distance, :button, :q => [:description_cont, :location, :classifications_name_eq])
   end
+
+  def set_products
+    @products = Product.all
+  end
+
 end
