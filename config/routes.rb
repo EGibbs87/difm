@@ -53,6 +53,5 @@ Rails.application.routes.draw do
 
   # mount StripeEvent::Engine, at: '/payments'
   # get SSL cert
-  get '/.well-known/acme-challenge/jtRk-WCkcTLpYr1VWom9jFN35KIWUlxXgGRwUUfXGXE' => 'pages#cert1'
-  get '/.well-known/acme-challenge/3rFti9PATS2VzhJSF_5w58gEGQL4HJVn_pnugnHS6Lo' => 'pages#cert2'
+  get '/.well-known/acme-challenge/:id' => 'pages#cert'
 end
