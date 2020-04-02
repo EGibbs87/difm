@@ -28,7 +28,7 @@ class PagesController < ApplicationController
   end
 
   def cert
-    render text: "#{params[:id]}.gHP6Fo2uP6nbs7PgSdthl4jBAjUsIKZ795LZ78ajMM8"
+    render plain: "#{params[:id]}.gHP6Fo2uP6nbs7PgSdthl4jBAjUsIKZ795LZ78ajMM8"
   end
 
   private
