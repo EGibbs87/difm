@@ -27,6 +27,10 @@ class PagesController < ApplicationController
     end
   end
 
+  def cert
+    render '/certs/cert'
+  end
+
   private
 
   def search_params
