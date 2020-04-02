@@ -28,11 +28,11 @@ class PagesController < ApplicationController
   end
 
   def cert1
-    render '/certs/cert-1'
+    render text: "jtRk-WCkcTLpYr1VWom9jFN35KIWUlxXgGRwUUfXGXE.gHP6Fo2uP6nbs7PgSdthl4jBAjUsIKZ795LZ78ajMM8"
   end
 
   def cert2
-    render '/certs/cert-2'
+    render text: "3rFti9PATS2VzhJSF_5w58gEGQL4HJVn_pnugnHS6Lo.gHP6Fo2uP6nbs7PgSdthl4jBAjUsIKZ795LZ78ajMM8"
   end
 
   private
