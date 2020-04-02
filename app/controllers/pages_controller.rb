@@ -27,8 +27,12 @@ class PagesController < ApplicationController
     end
   end
 
-  def cert
-    render '/certs/cert'
+  def cert1
+    render '/certs/cert-1'
+  end
+
+  def cert2
+    render '/certs/cert-2'
   end
 
   private
