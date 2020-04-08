@@ -4,15 +4,16 @@ class ChargesController < ApplicationController
 
   def new_card
     begin
+      flash[:success] = "Credit card was successfully created."
       stripe_card_id = CreditCardService.new(current_user.id, card_params).create_credit_card
       current_user.credit_cards.where(stripe_id: stripe_card_id).first_or_create(card_params)
     rescue Stripe::CardError => e
-      flash[:error] = e.message
-      redirect_to :back
+      flash.delete(:success)
+      flash[:alert] = e.message
     end
 
     respond_to do |format|
-      format.js { render 'products/new_card' }
+      format.html { redirect_to Product.find(params['product']) }
     end
   end
 

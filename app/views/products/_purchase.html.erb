@@ -15,7 +15,7 @@
             <li class="list-group-item"><%= number_to_currency(product.price/100.0, :precision => 2) %><% if count.to_i == 0 %>/month<% end %></li>
             <li class="list-group-item"><% if count.to_i > 0 %><%= number_to_currency((product.price/100.0)/count.to_i, :precision => 2) %>/post<% else %> Unlimited posts <% end %></li>
             <li class="list-group-item">
-              <%= link_to (count.to_i > 0 ? "Get #{product.name}" : "Subscribe"), product_path(product.id), :class => "btn btn-outline-success" %>
+              <%= link_to (count.to_i > 0 ? "Get #{product.name}" : "Buy Posts"), product_path(product.id), :class => "btn btn-outline-success" %>
             </li>
           </ul>
         </div>

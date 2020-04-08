@@ -37,8 +37,8 @@ gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.7'
 # Use Stripe to manage payments
-# gem 'stripe'
-# gem 'stripe_event'
+gem 'stripe'
+gem 'stripe_event'
 # Use jquery
 # gem 'jquery-rails'
 # Use Redis adapter to run Action Cable in production

@@ -23,11 +23,14 @@ class CreditCardsController < ApplicationController
 
   def new_card_from_acct
     begin
+      flash[:success] = "Credit card was successfully created."
       stripe_card_id = CreditCardService.new(current_user.id, credit_card_params).create_credit_card
       current_user.credit_cards.where(stripe_id: stripe_card_id).first_or_create(credit_card_params)
     rescue Stripe::CardError => e
-      flash[:error] = e.message
-      redirect_to :back
+      flash.delete(:success)
+      flash[:alert] = e.message
+
+      # redirect_to :back
     end
 
     respond_to do |format|
@@ -42,9 +45,11 @@ class CreditCardsController < ApplicationController
 
     respond_to do |format|
       if @credit_card.save
+        flash[:success] = "Credit card was successfully created."
         format.html { redirect_to @credit_card, notice: 'Credit card was successfully created.' }
         format.json { render :show, status: :created, location: @credit_card }
       else
+        flash[:alert] = "Credit card information was invalid"
         format.html { render :new }
         format.json { render json: @credit_card.errors, status: :unprocessable_entity }
       end
@@ -70,6 +75,7 @@ class CreditCardsController < ApplicationController
   def destroy
     @credit_card.destroy
     respond_to do |format|
+      flash[:success] = "Credit card was successfully removed"
       format.html { redirect_to :back, notice: 'Credit card was successfully destroyed.' }
       format.js { render 'devise/registrations/destroy' }
       format.json { head :no_content }
