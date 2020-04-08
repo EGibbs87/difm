@@ -1,7 +1,7 @@
 <div id="service-form">
   <% sel_class = @service.classifications.collect(&:name) %>
   <%= f.text_field :location, :class => "form-control mr-sm-2 form-new", :placeholder => "Primary Zip Code", :disabled => current_user.posts == "0" %>
-  <%= f.text_field :range, :class => "form-control mr-sm-2 form-new", :placeholder => "Range (mi)", :disabled => current_user.posts == "0" %>
+  <%= f.number_field :range, :class => "form-control mr-sm-2 form-new", :placeholder => "Range (mi)", :disabled => current_user.posts == "0", :min => 0.1, :max => 35000 %>
   <%= f.text_field :availability, :class => "form-control mr-sm-2 form-new", :placeholder => "Times available", :disabled => current_user.posts == "0" %>
   <%= f.text_area :description, :class => "form-control mr-sm-2 form-new", :placeholder => "Service description", :disabled => current_user.posts == "0" %>
   <% if action_name == "edit" %>
