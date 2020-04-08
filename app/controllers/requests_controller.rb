@@ -28,12 +28,12 @@ class RequestsController < ApplicationController
       next if c < 1
       @request.classifications << @classifications.find(c)
     end
-    expiration = [request_params[:expiration].to_i, current_user.posts].min
+    expiration = [request_params[:expiration].to_i, current_user.posts.to_i].min
     @request.expiration = Date.today + expiration.weeks
 
     respond_to do |format|
       if @request.save
-        current_user.update(posts: current_user.posts - expiration)
+        current_user.update(posts: current_user.posts.to_i - expiration)
         flash[:success] = "Request successfully created!"
         format.html { redirect_to @request }
         format.json { render :show, status: :created, location: @request }
@@ -60,14 +60,14 @@ class RequestsController < ApplicationController
       flash[:alert] = "You cannot edit another user's listing"
     end
 
-    expiration = [request_params[:expiration].to_i, current_user.posts].min
+    expiration = [request_params[:expiration].to_i, current_user.posts.to_i].min
     start_date = [Date.today, @request.expiration].max
     @request.expiration = start_date + expiration.weeks
     @request.active = true
     
     respond_to do |format|
       if @request.save
-        current_user.update(posts: current_user.posts - expiration)
+        current_user.update(posts: current_user.posts.to_i - expiration)
         flash[:success] = "Request renewed!"
         format.html { redirect_to @request }
         format.js { }

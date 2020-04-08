@@ -28,12 +28,12 @@ class ServicesController < ApplicationController
       next if c < 1
       @service.classifications << @classifications.find(c)
     end
-    expiration = [service_params[:expiration].to_i, current_user.posts].min
+    expiration = [service_params[:expiration].to_i, current_user.posts.to_i].min
     @service.expiration = Date.today + expiration.weeks
 
     respond_to do |format|
       if @service.save
-        current_user.update(posts: current_user.posts - expiration)
+        current_user.update(posts: current_user.posts.to_i - expiration)
         flash[:success] = "Service successfully created"
         format.html { redirect_to @service }
         format.json { render :show, status: :created, location: @service }
@@ -60,14 +60,14 @@ class ServicesController < ApplicationController
       flash[:alert] = "You cannot edit another user's listing"
     end
 
-    expiration = [service_params[:expiration].to_i, current_user.posts].min
+    expiration = [service_params[:expiration].to_i, current_user.posts.to_i].min
     start_date = [Date.today, @service.expiration].max
     @service.expiration = start_date + expiration.weeks
     @service.active = true
     
     respond_to do |format|
       if @service.save
-        current_user.update(posts: current_user.posts - expiration)
+        current_user.update(posts: current_user.posts.to_i - expiration)
         flash[:success] = "Listing renewed!"
         format.html { redirect_to @service }
         format.js { }
