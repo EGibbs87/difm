@@ -26,7 +26,7 @@ class UsersController < ApplicationController
   end
 
   def reviews
-    @user = User.find(params['user_id'])
+    @user = User.find_by("LOWER(username)= ?", params['username'].downcase)
     render 'users/reviews'
   end
 

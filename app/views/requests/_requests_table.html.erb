@@ -17,7 +17,7 @@
         <td onclick="window.location='/requests/<%= r.id %>';" class="request-link-cell"><%= r.classifications.collect(&:name).join(", ") %></td>
         <td>
           <%= r.description %><br>
-          <a href="<%= reviews_path(r.user.id) %>"><i><%= r.user.username %>
+          <a href="<%= reviews_path(r.user.username) %>"><i><%= r.user.username %>
           <%= render :partial => 'layouts/stars', :locals => { :user => r.user, :role => "request" } %></i></a>
         </td>
       </tr>

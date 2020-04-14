@@ -10,7 +10,7 @@
   <p style="font-size: 10px; margin-left:10px"><i>(Map points simply to listing's zip code)</i></p>
   <div class="card-body">
     <ul class="list-group-flush">
-      <li class="list-group-item"><span class="list-group-label">USER</span><a href="<%= reviews_path(service.user.id) %>"><%= service.user.username %><%= render :partial => 'layouts/stars', :locals => { :user => service.user, :role => "service" } %></a></li>
+      <li class="list-group-item"><span class="list-group-label">USER</span><a href="<%= reviews_path(service.user.username) %>"><%= service.user.username %><%= render :partial => 'layouts/stars', :locals => { :user => service.user, :role => "service" } %></a></li>
       <li class="list-group-item"><span class="list-group-label">CONTACT</span><% if user_signed_in? %><% if service.user.show_email_service %><%= service.user.email %><% end %><% if service.user.show_email_service && service.user.show_phone_service && service.user.phone %> | <% end %><% if service.user.show_phone_service %><%= service.user.phone %><% end %><% else %>Please login to view contact information.<% end %></li>
       <li class="list-group-item"><span class="list-group-label">ZIP CODE</span><%= service.location %></li>
       <li class="list-group-item"><span class="list-group-label">RANGE</span><%= service.range %><% if service.range %> mi<% end %></li>

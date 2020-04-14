@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   get '/search_requests' => 'requests#search', :as => 'search_requests'
   post '/search_listings' => 'pages#search', :as => 'search_listings'
   get '/users' => 'users#users', :as => 'users'
-  get '/users/:user_id/reviews' => 'users#reviews', :as => 'reviews'
+  get '/users/:username/reviews' => 'users#reviews', :as => 'reviews'
 
   authenticated :user do
     resources :users, only: [:update]
@@ -23,10 +23,10 @@ Rails.application.routes.draw do
     put '/requests/:id' => 'requests#update'
     delete '/requests/:id' => 'requests#destroy', :as => 'destroy_request'
     get '/dashboard' => 'pages#dashboard'
-    get '/users/:user_id/reviews/new_review' => 'users#new_review', :as => 'new_review'
-    get '/users/:user_id/reviews/edit_review' => 'users#edit_review', :as => 'edit_review'
-    post '/users/:user_id/reviews/new_review' => 'users#create_review', :as => 'create_review'
-    put '/users/:user_id/reviews/edit_review' => 'users#update_review', :as => 'update_review'
+    get '/users/:username/reviews/new_review' => 'users#new_review', :as => 'new_review'
+    get '/users/:username/reviews/edit_review' => 'users#edit_review', :as => 'edit_review'
+    post '/users/:username/reviews/new_review' => 'users#create_review', :as => 'create_review'
+    put '/users/:username/reviews/edit_review' => 'users#update_review', :as => 'update_review'
     delete '/users/reviews/:id' => 'users#destroy_review', :as => 'destroy_review'
     resources :credit_cards
     resources :charges

@@ -23,7 +23,7 @@
     <tbody>
       <% @users.each do |u| %>
         <tr>
-          <td><%= link_to u.username, reviews_path(u.id) %></td>
+          <td><%= link_to u.username, reviews_path(u.username) %></td>
           <td><%= render :partial => 'layouts/stars', :locals => { :user => u, :role => "service" } %></td>
           <td><%= render :partial => 'layouts/stars', :locals => { :user => u, :role => "request" } %></td>
           <td><%= u.profile || "None provided." %></td>
