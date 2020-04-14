@@ -221,7 +221,44 @@ h1 {
   transition: 1s;
 }
 
+.list-group-label {
+  width: 120px !important;
+  background-color: #dddddd;
+  padding-left: 3px;
+  padding-right: 3px;
+  margin-right: 5px;
+  font-size: 12px;
+  top: -10px;
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.list-group-label-owner {
+  width: 120px !important;
+  background-color: #aadddd;
+  padding-left: 3px;
+  padding-right: 3px;
+  margin-right: 5px;
+  font-size: 12px;
+  top: -10px;
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  border-radius: 4px;
+}
+
 .rm-cc {
   text-decoration: none !important;
   color: black !important;
+}
+
+.custom-control {
+  line-height: 1;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: black;
 }

@@ -20,15 +20,25 @@
         
         <h4>Show phone for:</h4>
 
-        <%= f.check_box :show_phone_service, :class => 'slideThree' %> Services<br>
-
-        <%= f.check_box :show_phone_request %> Requests<br>
+        <div class="custom-control custom-switch">
+          <%= f.check_box :show_phone_service, :class => "custom-control-input", :id => "show-phone-service" %><br>
+          <label class="custom-control-label" for="show-phone-service">Services</label>
+        </div>
+        <div class="custom-control custom-switch">
+          <%= f.check_box :show_phone_request, :class => "custom-control-input", :id => "show-phone-request" %><br>
+          <label class="custom-control-label" for="show-phone-request">Requests</label>
+        </div><br><br>
 
         <h4>Show email address for:</h4>
 
-        <%= f.check_box :show_email_service %> Services<br>
-
-        <%= f.check_box :show_email_request %> Requests<br>
+        <div class="custom-control custom-switch">
+          <%= f.check_box :show_email_service, :class => "custom-control-input", :id => "show-email-service" %><br>
+          <label class="custom-control-label" for="show-email-service">Services</label>
+        </div>
+        <div class="custom-control custom-switch">
+          <%= f.check_box :show_email_request, :class => "custom-control-input", :id => "show-email-request" %><br>
+          <label class="custom-control-label" for="show-email-request">Requests</label>
+        </div><br><br>
 
         <%= f.text_area :profile, :placeholder => "Personal summary (optional)", :class => "form-control reg-form-field" %>
 
@@ -60,11 +70,11 @@
         <%= f.password_field :current_password, :placeholder => "Current password", :class => "form-control reg-form-field" %>
 
         <%= f.submit "Update", :class => "btn btn-outline-success", :name => "acct-submit" %>
-      <% end %>
+      <% end %><br>
 
       <h3>Cancel my account</h3>
 
-      <p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, :class => "btn btn-outline-danger", method: :delete %></p>    
+      <p><%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, :class => "btn btn-outline-danger", method: :delete %></p>    
     </div>
   </div>
 </div>

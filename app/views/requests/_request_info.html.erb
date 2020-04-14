@@ -1,30 +1,39 @@
-<span><b>User: </b></span><%= request.user.username %> <%= render :partial => 'layouts/stars', :locals => { :user => request.user, :role => "request" } %>
-<br>
-<span><b>Zip Code: </b></span><%= request.location %><br>
-<span><b>Range: </b></span><%= request.range %><% if request.range %> mi<% end %><br>
-<span><b>Timeframe: </b></span><%= request.timeframe %><br>
-<span><b>Description: </b></span><%= request.description %><br>
-<span><b>Classifications: </b></span><%= request.classifications.collect(&:name).join(", ") %><br>
-<% if user_signed_in? %>
-  <% if request.user.show_email_request %>
-    <span><b>Contact Email: </b></span><%= request.user.email %><br>
-  <% end %>
-  <% if request.user.show_phone_request %>
-    <span><b>Contact Phone: </b></span><%= request.user.phone %><br>
-  <% end %>
-  <% if current_user.id == request.user_id %>
-    <b>Time remaining:</b>  <% if (request.expiration - Date.today).to_i > 0 %><%= (request.expiration - Date.today).to_i %> day<% if (request.expiration - Date.today).to_i != 1 %>s<% end %><% else %>Expired<% end %><br>
-    <b>Status:</b>  <span id="active-status"><% if request.active %>Active<% else %>Inactive<% end %></span>
-    <div id="renew-wrapper">
-      <button type="button" style="margin-top: 5px; margin-bottom: 5px" class="btn btn-outline-success" data-toggle="modal" data-target="#renewModal">Renew</button>
-      <%= link_to "#{request.active ? 'Deactivate' : 'Activate'}", toggle_active_request_path(request), :class => "btn btn-outline-danger #{!request.active && (Date.today - request.expiration).to_i > 0 ? 'disabled' : ''}", :id => "toggle-active-btn", :remote => true %><br>
-      <% if current_user.sub_type.nil? %>
-        <i style="<%= current_user.posts == "0" ? 'color: red' : '' %>"><b><%= current_user.posts %></b> post<%= current_user.posts == "1" ? "" : "s" %> remaining</i>
-      <% elsif current_user.sub_type == "unlimited" %>
-        <i><b>Unlimited</b> posts remaining for this month</i>
+<div class="card" style="width: 600px">
+  <iframe
+    class="card-img-top"
+    alt="map"
+    width="600"
+    height="450"
+    frameborder="0" style="border:0"
+    src="https://www.google.com/maps/embed/v1/place?key=<%= Rails.env == 'production' ? ENV['MAPS_API_KEY'] : Rails.application.secrets['MAPS_API_KEY'] %>&q=<%= request.latitude %>,<%= request.longitude %>&zoom=12" allowfullscreen>
+  </iframe>
+  <p style="font-size: 10px; margin-left:10px"><i>(Map points simply to listing's zip code)</i></p>
+  <div class="card-body">
+    <ul class="list-group-flush">
+      <li class="list-group-item"><span class="list-group-label">USER</span><a href="<%= reviews_path(request.user.id) %>"><%= request.user.username %><%= render :partial => 'layouts/stars', :locals => { :user => request.user, :role => "request" } %></a></li>
+      <li class="list-group-item"><span class="list-group-label">CONTACT</span><% if user_signed_in? %><% if request.user.show_email_request %><%= request.user.email %><% end %><% if request.user.show_email_request && request.user.show_phone_request && request.user.phone %> | <% end %><% if request.user.show_phone_request %><%= request.user.phone %><% end %><% else %>Please login to view contact information.<% end %></li>
+      <li class="list-group-item"><span class="list-group-label">ZIP CODE</span><%= request.location %></li>
+      <li class="list-group-item"><span class="list-group-label">RANGE</span><%= request.range %><% if request.range %> mi<% end %></li>
+      <li class="list-group-item"><span class="list-group-label">TIMEFRAME</span><%= request.timeframe %></li>
+      <li class="list-group-item"><span class="list-group-label">DESCRIPTION</span><%= request.description %></li>
+      <li class="list-group-item"><span class="list-group-label">CLASSIFICATIONS</span><%= request.classifications.collect(&:name).join(", ") %></li>
+      <% if current_user.try(:id) == request.user_id %>
+        <li class="list-group-item"><span class="list-group-label-owner">EXPIRATION</span><% if (request.expiration - Date.today).to_i > 0 %><%= (request.expiration - Date.today).to_i %> day<% if (request.expiration - Date.today).to_i != 1 %>s<% end %><% else %>Expired<% end %></li>
+        <li class="list-group-item"><span class="list-group-label-owner">POST STATUS</span><% if request.active %>Active<% else %>Inactive<% end %></li>
       <% end %>
-      <br>
-    </div>
-    <%= link_to "Edit", edit_request_path(request) %>
-  <% end %>
-<% end %>
+    </ul>
+    <% if current_user.id == request.user_id %>
+      <div id="renew-wrapper">
+        <button type="button" style="margin-top: 5px; margin-bottom: 5px" class="btn btn-outline-success" data-toggle="modal" data-target="#renewModal">Renew</button>
+        <%= link_to "#{request.active ? 'Deactivate' : 'Activate'}", toggle_active_request_path(request), :class => "btn btn-outline-danger #{!request.active && (Date.today - request.expiration).to_i > 0 ? 'disabled' : ''}", :id => "toggle-active-btn", :remote => true %>
+        <%= link_to "Edit", edit_request_path(request), :class => "btn btn-outline-info"  %><br>
+        <% if current_user.sub_type.nil? %>
+          <i style="<%= current_user.posts == "0" ? 'color: red' : '' %>"><b><%= current_user.posts %></b> post<%= current_user.posts == "1" ? "" : "s" %> remaining</i>
+        <% elsif current_user.sub_type == "unlimited" %>
+          <i><b>Unlimited</b> posts remaining for this month</i>
+        <% end %>
+        <br>
+      </div>
+    <% end %>
+  </div>
+</div>

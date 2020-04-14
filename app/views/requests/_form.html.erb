@@ -12,8 +12,10 @@
   <span id="classification-header"><b>Classifications:</b></span><%= f.collection_check_boxes :classifications, classifications, :id, :name, {} do |c| %>
     <%= c.label(class: "check_box") do %>
       <div class="col-xs-4 form_check_boxes">
-        <%= c.check_box(:class => "check_box", :checked => sel_class.include?(c.object.name)) %>
-        <%= c.object.name %>
+        <div class="custom-control custom-switch">
+          <%= c.check_box(:class => "check_box custom-control-input", :checked => sel_class.include?(c.object.name)) %><br>
+          <label class="custom-control-label" for="request_classifications_<%= c.object.id %>"><%= c.object.name %></label>
+        </div>
       </div>
     <% end %>
   <% end %>
@@ -48,17 +50,16 @@
 </div>
 
 <script>
-  // make sure that if all checkboxes are empty, "Other" is checked
   function validateCheckboxes(){
-    var cbs = Array.from(document.querySelectorAll("label"));
+    var cbs = Array.from(document.querySelectorAll('[type=checkbox]'));
     var checked = cbs.map(function(e){
-      return e.querySelector('[type=checkbox]').checked;
-    })
+      return e.checked;
+    });
     if(checked.reduce(function(x,e){ return x * !e }, true)){
       // check 'other'
-      other = cbs.filter(function(e){ return e.innerText.trim() == "Other" })[0];
+      other = cbs.filter(function(e){ return e.labels[1].innerText.trim() == "Other" })[0];
 
-      other.querySelector('[type=checkbox]').checked = true
+      other.checked = true
     }
   }
   // Validate form

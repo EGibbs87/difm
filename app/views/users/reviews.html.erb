@@ -2,7 +2,7 @@
 <div id="reviews-container">
   <hr>  
   <span class="pull-right" data-toggle="<%= !user_signed_in? || current_user.id == @user.id ? 'tooltip' : ''%>" data-placement="top" title="<%= user_signed_in? ? (current_user.id == @user.id ? 'Can\'t review self' : nil) : 'Only available when signed in' %>">
-    <%= link_to "Leave or update a review", UserReview.exists?(for_user_id: @user.id, by_user_id: current_user.id, role: "service") ? edit_review_path({:user_id => @user.id, :role => "service"}) : new_review_path({:user_id => @user.id, :role => "service"}), :class => "btn btn-outline-success pull-right #{'disabled' if !user_signed_in? || current_user.id == @user.id }", :id => 'new-review-btn' %>
+    <%= link_to "Leave or update a review", UserReview.exists?(for_user_id: @user.id, by_user_id: current_user.try(:id), role: "service") ? edit_review_path({:user_id => @user.id, :role => "service"}) : new_review_path({:user_id => @user.id, :role => "service"}), :class => "btn btn-outline-success pull-right #{'disabled' if !user_signed_in? || current_user.try(:id) == @user.id }", :id => 'new-review-btn' %>
   </span>
   <h1>Reviews for Services Provided</h1>
   <hr>
@@ -58,7 +58,7 @@
 
   <hr>
   <span class="pull-right" data-toggle="<%= !user_signed_in? || current_user.id == @user.id ? 'tooltip' : ''%>" data-placement="top" title="<%= user_signed_in? ? (current_user.id == @user.id ? 'Can\'t review self' : nil) : 'Only available when signed in' %>">
-    <%= link_to "Leave or update a review", UserReview.exists?(for_user_id: @user.id, by_user_id: current_user.id, role: "request") ? edit_review_path({:user_id => @user.id, :role => "request"}) : new_review_path({:user_id => @user.id, :role => "request"}), :class => "btn btn-outline-success pull-right #{'disabled' if !user_signed_in? || current_user.id == @user.id }", :id => 'new-review-btn' %>
+    <%= link_to "Leave or update a review", UserReview.exists?(for_user_id: @user.id, by_user_id: current_user.try(:id), role: "request") ? edit_review_path({:user_id => @user.id, :role => "request"}) : new_review_path({:user_id => @user.id, :role => "request"}), :class => "btn btn-outline-success pull-right #{'disabled' if !user_signed_in? || current_user.try(:id) == @user.id }", :id => 'new-review-btn' %>
   </span>
   <h1>Reviews for Requests Made</h1>
   <hr>
