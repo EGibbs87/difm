@@ -2,5 +2,21 @@
 <h1>About Us</h1>
 <hr>
 <div class="inner-content-wrapper">
-  <p>We're cool dudes.  Having said that, we'll fill more of this stuff out later.</p>
+  <p><b>Mission:</b></p>
+  <p>We want to provide contractors with a platform to advertise their goods and services to their consumers, and a place for consumers to tell service providers what they need.</p>
+  <br>
+  <p><b>General Rules:</b></p>
+  <% rules = ["DIFM is a friendly community for all users.  We ask that all members respect the wishes of other members, particularly regarding whether or not they want to remain in contact with you.", "We endeavor to keep this site clean from sexual, violent, provocative, racist, threatening, or otherwise offensive content.  Any materials or statements containing such content, including, but not limited to, drugs, weapons, or anything of such nature, is not permitted, and may be removed by site administrators at any time.", "Members may not upload any copyrighted content to the DIFM website without a clearly visible credit or citation to the copyright holder.  If such a reference is missing, the uploading member claims ownership to the material and releases DIFM from any legal harm that potential copyright infringements may carry against them.", "We ask that all members review their peers when transactions take place so that other users may have a better idea of what to expect.  We also ask that all reviews are written fairly and maturely.", "Please be courteous to others.  By registering with DIFM, you are accepting to follow the rules as laid out above."] %>
+  <% rules.each_with_index do |r,i| %>
+    <p style="margin-left: 20px;"><%= i + 1 %>.    <%= r %></p>
+  <% end %>
+  <br>
+  <p><b>FAQs:</b></p>
+  <p>Coming soon....</p>
+  <br>
+  <p><b>Fees:</b></p>
+  <p>DIFM is an a la carte service, so there is no fee for registration or for responding to posts, only for posting services and/or requests yourself.  The fee structure (as of 2020-04-23) is ass follows:</p>
+  <p>$1.00 per post</p>
+  <p>$4.50 for 4 posts</p>
+  <p>$8.00 for 10 posts</p>
 </div>
