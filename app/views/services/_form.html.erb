@@ -1,13 +1,13 @@
 <div id="service-form">
   <% sel_class = @service.classifications.collect(&:name) %>
-  <%= f.text_field :location, :class => "form-control mr-sm-2 form-new", :placeholder => "Primary Zip Code", :disabled => current_user.posts == "0" %>
-  <%= f.number_field :range, :step => 0.1, :class => "form-control mr-sm-2 form-new", :placeholder => "Range (mi)", :disabled => current_user.posts == "0", :min => 0.1, :max => 35000 %>
-  <%= f.text_field :availability, :class => "form-control mr-sm-2 form-new", :placeholder => "Times available", :disabled => current_user.posts == "0" %>
-  <%= f.text_area :description, :class => "form-control mr-sm-2 form-new", :placeholder => "Service description", :disabled => current_user.posts == "0" %>
+  <%= f.text_field :location, :class => "form-control mr-sm-2 form-new", :placeholder => "Primary Zip Code", :disabled => @service.expiration < Date.today %>
+  <%= f.number_field :range, :step => 0.1, :class => "form-control mr-sm-2 form-new", :placeholder => "Range (mi)", :disabled => @service.expiration < Date.today, :min => 0.1, :max => 35000 %>
+  <%= f.text_field :availability, :class => "form-control mr-sm-2 form-new", :placeholder => "Times available", :disabled => @service.expiration < Date.today %>
+  <%= f.text_area :description, :class => "form-control mr-sm-2 form-new", :placeholder => "Service description", :disabled => @service.expiration < Date.today %>
   <% if action_name == "edit" %>
     <%= f.hidden_field :expiration, :value => @service.expiration %>
   <% else %>
-    <%= f.number_field :expiration, :class => "form-control mr-sm-2 form-new", :placeholder => "Weeks to keep listing active (COST: 1 post/wk)", :disabled => current_user.posts == "0", :min => 1, :max => current_user.posts.to_i %>
+    <%= f.number_field :expiration, :class => "form-control mr-sm-2 form-new", :placeholder => "Weeks to keep listing active (COST: 1 post/wk)", :disabled => @service.expiration < Date.today, :min => 1, :max => current_user.posts.to_i %>
   <% end %>
   <span id="classification-header"><b>Classification(s):</b></span><%= f.collection_check_boxes :classifications, classifications, :id, :name, {} do |c| %>
     <%= c.label(class: "check_box") do %>
@@ -20,7 +20,7 @@
     <% end %>
   <% end %>
   <br>
-  <%= f.submit action_name == "edit" ? "Update" : "Create listing", :class => "btn btn-outline-success", :disabled => current_user.posts == "0" %>
+  <%= f.submit action_name == "edit" ? "Update" : "Create listing", :class => "btn btn-outline-success", :disabled => @service.expiration < Date.today %>
   <% if action_name != "edit" %>
     <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#buyPostsModal" style="margin-left: 8px">
     Buy More Posts
