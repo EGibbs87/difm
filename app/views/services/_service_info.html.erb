@@ -22,7 +22,7 @@
         <li class="list-group-item"><span class="list-group-label-owner">POST STATUS</span><% if service.active %>Active<% else %>Inactive<% end %></li>
       <% end %>
     </ul>
-    <% if current_user.id == service.user_id %>
+    <% if user_signed_in? && current_user.id == service.user_id %>
       <div id="renew-wrapper">
         <button type="button" style="margin-top: 5px; margin-bottom: 5px" class="btn btn-outline-success" data-toggle="modal" data-target="#renewModal">Renew</button>
         <%= link_to "#{service.active ? 'Deactivate' : 'Activate'}", toggle_active_service_path(service), :class => "btn btn-outline-danger #{!service.active && (Date.today - service.expiration).to_i > 0 ? 'disabled' : ''}", :id => "toggle-active-btn", :remote => true %>
