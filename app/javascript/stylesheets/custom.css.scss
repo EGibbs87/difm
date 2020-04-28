@@ -48,6 +48,22 @@ html, body {
   margin-top: 10px;
 }
 
+#service-info, #request-info {
+  text-align:center;
+}
+
+#card-container {
+  display: inline-block;
+  border: 1px gray solid;
+  border-radius: 5px;
+  padding: 20px;
+  background-color: #333333;
+}
+
+.card {
+  text-align: left;
+}
+
 .service-link-cell, .request-link-cell {
   cursor: pointer;
 }
