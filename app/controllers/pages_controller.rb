@@ -4,6 +4,9 @@ class PagesController < ApplicationController
     @recent_services = Service.all.sort_by(&:created_at).first(10)
     @recent_requests = Request.all.sort_by(&:created_at).first(10)
     @q = Service.ransack(params[:q])
+    if !user_signed_in?
+      flash[:success] = "Limited time offer: Receive 4 free posts when you sign up!"
+    end
     render 'pages/home'
   end
 
@@ -23,7 +26,8 @@ class PagesController < ApplicationController
     elsif params.keys.include?("requests")
       redirect_to search_requests_url(search_params)
     else
-      redirect_to root_url, :alert => "Error: invalid request"
+      flash[:alert] = "Error: Invalid request"
+      redirect_to root_url
     end
   end
 

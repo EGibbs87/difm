@@ -10,8 +10,10 @@ class UsersController < ApplicationController
     if params['gen-submit']
       respond_to do |format|
         if current_user.update(user_params)
-          format.html { redirect_to edit_registration_path(resource), :notice => "User updated successfully!" }
+          flash[:success] = "User updated successfully!"
+          format.html { redirect_to edit_registration_path(resource) }
         else
+          flash[:alert] = current_user.errors.messages.map { |k,v| v }.flatten.uniq.join("; ")
           format.html { redirect_to :back, :alert => current_user.errors}
         end
       end
@@ -53,10 +55,12 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @review.save
-        format.html { redirect_to reviews_path(params[:user_id]), notice: "Review successfully submitted" }
+        flash[:success] = "Review successfully submitted"
+        format.html { redirect_to reviews_path(params[:user_id]) }
         format.json { render :show, status: :created, location: @review }
       else
-        format.html { @user = User.find(params[:user_id]); render new_review_path({:user_id => params[:id], :role => params[:role]}), :alert => @review.errors }
+        flash[:alert] = @review.errors.messages.map { |k,v| v }.flatten.uniq.join("; ")
+        format.html { @user = User.find(params[:user_id]); render new_review_path({:user_id => params[:id], :role => params[:role]}) }
         format.json { render :json => @review.errors, :status => :unprocessable_entity }
       end
     end
@@ -70,10 +74,12 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @review.save
-        format.html { redirect_to reviews_path(params[:user_id]), notice: "Review successfully submitted" }
+        flash[:success] = "Review successfully updated"
+        format.html { redirect_to reviews_path(params[:user_id]) }
         format.json { render :show, status: :created, location: @review }
       else
-        format.html { @user = User.find(params[:user_id]); render new_review_path({:user_id => params[:id], :role => params[:role]}), :alert => @review.errors }
+        flash[:alert] = @review.errors.messages.map { |k,v| v }.flatten.uniq.join("; ")
+        format.html { @user = User.find(params[:user_id]); render new_review_path({:user_id => params[:id], :role => params[:role]}) }
         format.json { render :json => @review.errors, :status => :unprocessable_entity }
       end
     end
@@ -82,12 +88,14 @@ class UsersController < ApplicationController
 
   def destroy_review
     if @review.by_user.id != current_user.id
-      redirect_to reviews_path, :alert => "You cannot delete another user's review"
+      flash[:alert] = "You cannot delete another user's review"
+      redirect_to reviews_path
     end
 
     @review.destroy
     respond_to do |format|
-      format.html { redirect_to users_path, :notice => 'Review was successfully removed' }
+      flash[:success] = 'Review was successfully removed'
+      format.html { redirect_to users_path }
       format.json { head :no_content }
     end
   end

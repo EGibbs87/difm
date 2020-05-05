@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_06_153108) do
+ActiveRecord::Schema.define(version: 2020_05_04_160348) do
 
   create_table "classifications", force: :cascade do |t|
     t.string "name"
@@ -108,7 +108,7 @@ ActiveRecord::Schema.define(version: 2020_02_06_153108) do
     t.string "customer_id"
     t.string "sub_type"
     t.text "profile"
-    t.string "posts", default: "0"
+    t.string "posts", default: "4"
     t.string "username"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
