@@ -17,7 +17,7 @@ class RequestsController < ApplicationController
 
   def new
     @classifications = Classification.all
-    @request = current_user.requests.new
+    @request = current_user.requests.new(expiration: Date.today + 1.week)
   end
 
   def create

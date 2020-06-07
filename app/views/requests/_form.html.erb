@@ -7,7 +7,7 @@
   <% if action_name == "edit" %>
     <%= f.hidden_field :expiration, :value => @request.expiration %>
   <% else %>
-    <%= f.number_field :expiration, :class => "form-control mr-sm-2 form-new", :placeholder => "Weeks to keep request active (COST: 1 post/wk)", :disabled => @request.expiration < Date.today, :min => 1, :max => current_user.posts.to_i %>
+    <%= f.number_field :expiration, :class => "form-control mr-sm-2 form-new", :placeholder => ENV["FREE_POSTS"] == "true" ? "Weeks to keep listing active" : "Weeks to keep listing active (COST: 1 post/wk)", :disabled => @request.expiration < Date.today, :min => 1, :max => current_user.posts.to_i %>
   <% end %>
   <span id="classification-header"><b>Classifications:</b></span><%= f.collection_check_boxes :classifications, classifications, :id, :name, {} do |c| %>
     <%= c.label(class: "check_box") do %>

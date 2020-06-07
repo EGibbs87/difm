@@ -17,7 +17,7 @@ class ServicesController < ApplicationController
 
   def new
     @classifications = Classification.all
-    @service = current_user.services.new
+    @service = current_user.services.new(expiration: Date.today + 1.week)
   end
 
   def create
