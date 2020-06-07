@@ -26,7 +26,7 @@ class RequestsController < ApplicationController
     c_ids = request_params[:classifications].map(&:"to_i")
     c_ids.each do |c|
       next if c < 1
-      @request.classifications << @classifications.find(c)
+      @request.classifications << Classification.find(c)
     end
     expiration = [request_params[:expiration].to_i, current_user.posts.to_i].min
     @request.expiration = Date.today + expiration.weeks
@@ -97,7 +97,7 @@ class RequestsController < ApplicationController
     c_ids.each do |c|
       next if c < 1
       rm_ids.delete(c)
-      @request.classifications << @classifications.find(c)
+      @request.classifications << Classification.find(c)
     end
 
     # remove rm_ids from @request

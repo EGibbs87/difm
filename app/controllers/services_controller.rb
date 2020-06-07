@@ -26,7 +26,7 @@ class ServicesController < ApplicationController
     c_ids = service_params[:classifications].map(&:"to_i")
     c_ids.each do |c|
       next if c < 1
-      @service.classifications << @classifications.find(c)
+      @service.classifications << Classification.find(c)
     end
     expiration = [service_params[:expiration].to_i, current_user.posts.to_i].min
     @service.expiration = Date.today + expiration.weeks
@@ -97,7 +97,7 @@ class ServicesController < ApplicationController
     c_ids.each do |c|
       next if c < 1
       rm_ids.delete(c)
-      @service.classifications << @classifications.find(c)
+      @service.classifications << Classification.find(c)
     end
 
     # remove rm_ids from @service
