@@ -5,6 +5,11 @@
   <p><b>Mission:</b></p>
   <p>We want to provide contractors with a platform to advertise their goods and services to their consumers, and a place for consumers to tell service providers what they need.</p>
   <br>
+  <p><b>About:</b></p>
+  <p>We’re Just two ordinary people who are passionate about building useful web tools with the hopes that our skills can benefit the community. There are people such as ourselves who seek extra income or side gigs to meet the financial needs of today's society. We both love living in the city, however the cost of living high enough that we’ve taken on side jobs like handyman work, dog walking/boarding, development, and much more. Not only have we taken on extra jobs, but we’ve also found ourselves in need of the services of other individuals with whom we've bartered our own services to save us some money.
+  <br><br> 
+  Through years of exchanging services and making side money, my buddy and I have decided to build an online community for people like us to find and offer services to make extra income or, if you are an individual business owner, you provide you a community platform to offer your services. This also serves to benefit customers trying to find multiple suitable contractors to ensure the timeliness of the work they need done. We believe that networking is very important and we hope that everyone who joins this community can broaden their own networks a little further.</p>
+  <br>
   <p><b>General Rules:</b></p>
   <% rules = ["DIFM is a friendly community for all users.  We ask that all members respect the wishes of other members, particularly regarding whether or not they want to remain in contact with you.", "We endeavor to keep this site clean from sexual, violent, provocative, racist, threatening, or otherwise offensive content.  Any materials or statements containing such content, including, but not limited to, drugs, weapons, or anything of such nature, is not permitted, and may be removed by site administrators at any time.", "Members may not upload any copyrighted content to the DIFM website without a clearly visible credit or citation to the copyright holder.  If such a reference is missing, the uploading member claims ownership to the material and releases DIFM from any legal harm that potential copyright infringements may carry against them.", "We ask that all members review their peers when transactions take place so that other users may have a better idea of what to expect.  We also ask that all reviews are written fairly and maturely.", "Please be courteous to others.  By registering with DIFM, you are accepting to follow the rules as laid out above."] %>
   <% rules.each_with_index do |r,i| %>
@@ -13,10 +18,12 @@
   <br>
   <p><b>FAQs:</b></p>
   <p>Coming soon....</p>
-  <br>
-  <p><b>Fees:</b></p>
-  <p>DIFM is an a la carte service, so there is no fee for registration or for responding to posts, only for posting services and/or requests yourself.  The fee structure (as of 2020-04-23) is as follows:</p>
-  <p>$1.00 per post</p>
-  <p>$4.50 for 4 posts</p>
-  <p>$8.00 for 10 posts</p>
+  <% unless ENV["FREE_POSTS"] == "true" %>
+    <br>
+    <p><b>Fees:</b></p>
+    <p>DIFM is an a la carte service, so there is no fee for registration or for responding to posts, only for posting services and/or requests yourself.  The fee structure (as of 2020-04-23) is as follows:</p>
+    <p>$1.00 per post</p>
+    <p>$4.50 for 4 posts</p>
+    <p>$8.00 for 10 posts</p>
+  <% end %>
 </div>

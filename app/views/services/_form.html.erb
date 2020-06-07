@@ -21,7 +21,7 @@
   <% end %>
   <br>
   <%= f.submit action_name == "edit" ? "Update" : "Create listing", :class => "btn btn-outline-success", :disabled => @service.expiration < Date.today %>
-  <% if action_name != "edit" %>
+  <% if action_name != "edit" && ENV["FREE_POSTS"] != "true" %>
     <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#buyPostsModal" style="margin-left: 8px">
     Buy More Posts
     </button><br>

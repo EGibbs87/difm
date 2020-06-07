@@ -33,7 +33,9 @@ class ServicesController < ApplicationController
 
     respond_to do |format|
       if @service.save
-        current_user.update(posts: current_user.posts.to_i - expiration)
+        unless ENV["FREE_POSTS"] = "true"
+          current_user.update(posts: current_user.posts.to_i - expiration)
+        end
         flash[:success] = "Service successfully created"
         format.html { redirect_to @service }
         format.json { render :show, status: :created, location: @service }
@@ -67,7 +69,9 @@ class ServicesController < ApplicationController
     
     respond_to do |format|
       if @service.save
-        current_user.update(posts: current_user.posts.to_i - expiration)
+        unless ENV["FREE_POSTS"] = "true"
+          current_user.update(posts: current_user.posts.to_i - expiration)
+        end
         flash[:success] = "Listing renewed!"
         format.html { redirect_to @service }
         format.js { }

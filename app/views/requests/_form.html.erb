@@ -22,15 +22,15 @@
 
   <br>
   <%= f.submit action_name == "edit" ? "Update" : "Submit request", :class => "btn btn-outline-success", :disabled => @request.expiration < Date.today %>
-  <% if action_name != "edit" %>
-    <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#buyPostsModal" style="margin-left: 8px">
-    Buy More Posts
-    </button><br>
-    <% if current_user.sub_type.nil? %>
-      <i style="<%= current_user.posts == "0" ? 'color: red' : '' %>"><b><%= current_user.posts %></b> post<%= current_user.posts == "1" ? "" : "s" %> remaining</i>
-    <% elsif current_user.sub_type == "unlimited" %>
-      <i><b>Unlimited</b> posts remaining for this month</i>
-    <% end %>
+  <% if action_name != "edit" && ENV["FREE_POSTS"] != "true" %>
+      <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#buyPostsModal" style="margin-left: 8px">
+      Buy More Posts
+      </button><br>
+      <% if current_user.sub_type.nil? %>
+        <i style="<%= current_user.posts == "0" ? 'color: red' : '' %>"><b><%= current_user.posts %></b> post<%= current_user.posts == "1" ? "" : "s" %> remaining</i>
+      <% elsif current_user.sub_type == "unlimited" %>
+        <i><b>Unlimited</b> posts remaining for this month</i>
+      <% end %>
   <% end %>
   <br>
 </div>

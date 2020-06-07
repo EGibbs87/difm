@@ -4,7 +4,7 @@ class PagesController < ApplicationController
     @recent_services = Service.all.sort_by(&:created_at).first(10)
     @recent_requests = Request.all.sort_by(&:created_at).first(10)
     @q = Service.ransack(params[:q])
-    if !user_signed_in?
+    if !user_signed_in? && ENV["PROMO_POSTS"] == "true" && ENV["FREE_POSTS"] == "false"
       flash[:success] = "Limited time offer: Receive 4 free posts when you sign up!"
     end
     render 'pages/home'

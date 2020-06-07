@@ -33,7 +33,9 @@ class RequestsController < ApplicationController
 
     respond_to do |format|
       if @request.save
-        current_user.update(posts: current_user.posts.to_i - expiration)
+        unless ENV["FREE_POSTS"] = "true"
+          current_user.update(posts: current_user.posts.to_i - expiration)
+        end
         flash[:success] = "Request successfully created!"
         format.html { redirect_to @request }
         format.json { render :show, status: :created, location: @request }
@@ -67,7 +69,9 @@ class RequestsController < ApplicationController
     
     respond_to do |format|
       if @request.save
-        current_user.update(posts: current_user.posts.to_i - expiration)
+        unless ENV["FREE_POSTS"] = "true"
+          current_user.update(posts: current_user.posts.to_i - expiration)
+        end
         flash[:success] = "Request renewed!"
         format.html { redirect_to @request }
         format.js { }
