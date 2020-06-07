@@ -6,7 +6,7 @@ class ServicesController < ApplicationController
 
   def index
     sp = search_params['q'] || {}
-    @classifications = Classification.all
+    @classifications = Classification.all.sort_by { |c| [(c.name == "Other") ? 1 : 0, c.name] }
     if !sp.try(:[], 'location').blank? && !params['distance'].blank?
       @q = Service.near([sp['location'], "USA"].join(", "), params['distance']).ransack(sp.except(:location))
     else
@@ -16,12 +16,12 @@ class ServicesController < ApplicationController
   end
 
   def new
-    @classifications = Classification.all
+    @classifications = Classification.all.sort_by { |c| [(c.name == "Other") ? 1 : 0, c.name] }
     @service = current_user.services.new(expiration: Date.today + 1.week)
   end
 
   def create
-    @classifications = Classification.all
+    @classifications = Classification.all.sort_by { |c| [(c.name == "Other") ? 1 : 0, c.name] }
     @service = current_user.services.new(service_params.except(:classifications))
     c_ids = service_params[:classifications].map(&:"to_i")
     c_ids.each do |c|
@@ -158,7 +158,7 @@ class ServicesController < ApplicationController
   private
 
   def set_classifications
-    @classifications = Classification.all
+    @classifications = Classification.all.sort_by { |c| [(c.name == "Other") ? 1 : 0, c.name] }
   end
 
   def set_service
